@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/yeken
 Tags: shortcode, variable, php, text, html, parameter, javascript, embed, reuse
 Requires at least: 6.0
 Tested up to: 6.8
-Stable tag: 4.2.2
+Stable tag: 4.2.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -86,6 +86,7 @@ The plugin comes with the following premium shortcodes:
 - sc-post-counts - Display a count of posts for certain statuses. Using the argument status, specify whether to return a count for all posts that have a status of "publish" (default), "future", "draft", "pending" or "private". [sv slug="sc-post-counts" status="draft"]
 - sc-user-counts - Display a count of all WordPress users or the number of WordPress users for a given role e.g. [sv slug="sc-user-counts" role="subscriber"] or [sv slug="sc-user-counts"].
 - sc-user-profile-photo - Display the WordPress profile photo for the logged in user e.g. [sv slug="sc-user-profile-photo" width="150"] or [sv slug="sc-user-profile-photo"]. Please note, width defaults to 96px.
+- sc-woocommerce - Display a WooCommerce user meta field field e.g. billing_phone. 
 
 **Free Shortcodes**
 
@@ -146,6 +147,12 @@ Login into Wordpress Admin Panel and goto Settings > Snippet Shortcodes
 4.1 -[sv slug="sc-db-value-by-id"], new Premium shortcode for fetching a value from a MySQL table.
 
 == Changelog ==
+
+= 4.2.3 =
+
+* Improvement: All shortcodes are now editable even if there is no premium license. Previously only the top 10 shortcodes could be edited.
+* Improvement: Display update messages from Yeken.uk in Admin notices.
+* Change: Slugs can no longer be changed if not in Premium.
 
 = 4.2.2 =
 
