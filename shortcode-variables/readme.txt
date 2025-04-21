@@ -1,146 +1,73 @@
 === Snippet Shortcodes ===
 Contributors: aliakro
-Donate link: https://www.paypal.me/yeken
-Tags: shortcode, variable, php, text, html, parameter, javascript, embed, reuse
+Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
 Tested up to: 6.8
-Stable tag: 4.2.3
+Stable tag: 4.2.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Donate Link: https://www.paypal.me/yeken
+Donate link: https://www.paypal.me/yeken
 
-Create your own shortcodes and assign text, html, etc to them. Use these across your site and only change in one place - saving time and effort!
+Create a library of custom shortcodes and reusable content, and seamlessly insert them into your posts and pages. 
 
 == Description ==
 
-= DOCUMENTATON / UPGRADE =
+> Create a library of custom shortcodes and reusable content, and seamlessly insert them into your posts and pages for streamlined, consistent site updates. Plus, get a head start with a built-in selection of ready-made shortcodes to use out of the box.
 
-[Snippet Shortcodes Website](https://snippet-shortcodes.yeken.uk/ "Snippet Shortcodes Website")
+Looking to reuse the same snippet of text or HTML across your website while only updating it in one spot? [Snippet Shortcodes](https://snippet-shortcodes.yeken.uk/) could be exactly what you need. With this tool, you can generate a library of custom shortcodes and embed them into your WordPress content. Using the familiar WordPress editor, you can insert anything from text and HTML to JavaScript, images, or any other elements supported by your theme or plugins. The biggest benefit? You only need to create the shortcode once, and you can then deploy it site-wide, saving time and ensuring consistency.
 
-= WHAT IS SNIPPET SHORTCODES? =
+*Quick example*
 
-Do you want to use the same snippet of text or HTML throughout your site but only have to change the value in one location? If so, this plugin maybe just what you need.
+By default, you tend to create content once and then copy and paste it across your site as needed. Later, when updates are required, you have to track down every instance, edit each one individually, and save every page or post - making consistent updates a tedious process. Instead, put a snippet like this into one of our [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) and get a shortcode you can paste into your content. To update, all you need to do is edit the [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) and your entire site will update consistently.
 
-Create your own Shortcodes and assign content to them. Using the standard WP editor, you can add text, HTML, JavaScript, images or other elements that your WordPress install and plugins allow. The main advantage is ability to create a shortcode once and re-use it throughout your site.
+``<a href="https://www.facebook.com/yekenuk" target="_blank" rel="noopener">Our Facebook</a>
 
-[ sv slug="your-slug-name"]
+to
 
-= FEATURES =
+``[sv slug="facebook-link"]
 
-* Create a shortcode once and place in multiple locations.
-* Update the shortcode in one location and it changes throughout your site.
-* Parameters to extend your shortcodes.
-* Free and Premium helper shortcodes to make life easier.
-* Multi-site support.
-* Process shortcodes within WordPress menu titles.
+**Basic Features**
 
-= SPECIFY PARAMETERS =
+* **[Custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html)** – Create up to 10 custom shortcodes that can be embedded throughout your website.
+* **[Parameters](https://snippet-shortcodes.yeken.uk/shortcodes-own.html)** – Enhance your shortcodes by passing parameters into them e.g. [ sv slug="logo" color="blue" ]
+* **[Ready made shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-free.html)**  – A collection of out-of-the-box shortcodes for displaying common WordPress fields such as site title, username, admin email, etc.
 
-In some cases you may wish to make your shortcodes more extendable. This is where parameters come in. For example, you may have a shortcode that renders a HTML table, however, depending on where you place that shortcode on your site, you may wish to specify additional arguments. Take the example below, you can see the additional arguments passed into shortcode, “border”, “background” etc.
+**Premium Features**
 
-[ sv slug="render-table" border="0" background="#FFFFFF" width="50%" site-title="YeKen"]
+* **No limits** – create unlimited [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
+* **Inline editor** – Ability to edit [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) quickly using the inline editor.
+* **Duplicator** – Ability to duplicate [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) with one button click.
+* **Enable /Disable** – Ability to enable or disable [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
+* **Multi-site** – use [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) throughout your entire multi-site, not just limited to the one child site. 
+* **[CSV import](https://snippet-shortcodes.yeken.uk/csv-import.html)** – Bulk import your custom shortcodes.
+* **[WooCommerce fields](https://snippet-shortcodes.yeken.uk/shortcodes/sc-woocommerce.html)** –  A ready-made shortcode to display WooCommerce fields.
+* **[Fetch values from database](https://snippet-shortcodes.yeken.uk/shortcodes/sc-db-value-by-id.html)** – A ready-made shortcode to fetch a value from any database table.
+* An enhanced [collection of out-of-the-box shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-premium.html) for displaying additional WordPress fields, as well as wrapping around PHP functionality like GET/POST values, number of users, etc.
 
-Each argument can be rendered into the shortcode in the with the following syntax %%background%%, %%width%%, etc. Below is an example:
+==Pricing Plans==
 
-<table border=”%%border%%” style=”background:%%background%%” width=”%%width%%”>
-<tr>
-<td>Welcome to our site, %%site-title%%.</td>
-</tr>
-</table>
+We're very transparent on our pricing and usually offer two plans: *yearly* and *lifetime*. For further information, please visit [our upgrade page](https://shop.yeken.uk/product/shortcode-variables/).
 
-**Premium Shortcodes**
+== Getting support ==
 
-The plugin comes with the following premium shortcodes:
+If you have a question or an issue, please ask on the plugin's [WordPress support page](https://wordpress.org/support/plugin/shortcode-variables/), and we'll be more than happy to help.
 
-- sc-date - A shortcode that displays today's date with the ability to add or subtract days, months and years. To specify an interval to add or subtract onto the date use the parameter "interval" e.g. [sv slug="sc-date" interval="-1 year"], [sv slug="sc-date" interval="+5 days"], [sv slug="sc-date" interval="+3 months"]. Intervals are based upon PHP intervals and are outlined here <a href="https://www.php.net/manual/en/dateinterval.createfromdatestring.php" target="_blank">https://www.php.net/manual/en/dateinterval.createfromdatestring.php</a>. Default is UK format (DD/MM/YYYY). Format can be changed by adding the parameter format="m/d/Y" onto the shortcode. Format syntax is based upon PHP date: <a href="http://php.net/manual/en/function.date.php" target="_blank">http://php.net/manual/en/function.date.php</a>
-- sc-db-value-by-id - A shortcode that fetches a value from the given MySQL table. Specify which column the value should be fetched from as well as specify which column should be matched against for the given key.
-- sc-site-language - Language code for the current site
-- sc-site-description - Site tagline (set in Settings > General)
-- sc-site-wp-url - The WordPress address (URL) (set in Settings > General)
-- sc-site-charset - The "Encoding for pages and feeds"  (set in Settings > Reading)
-- sc-site-wp-version - The current WordPress version
-- sc-site-html-type - The content-type (default: "text/html"). Themes and plugins
-- sc-site-stylesheet-url - URL to the stylesheet for the active theme.
-- sc-site-stylesheet_directory - Directory path for the active theme.
-- sc-site-template-url - The URL of the active theme's directory.
-- sc-site-current-url - The current URL.
-- sc-site-register-url - The URL to the WordPress registration page.
-- sc-site-pingback-url - The pingback XML-RPC file URL (xmlrpc.php)
-- sc-site-atom-feed - The Atom feed URL (/feed/atom)
-- sc-site-rdf-url - The RDF/RSS 1.0 feed URL (/feed/rfd)
-- sc-site-rss-url - The RSS 0.92 feed URL (/feed/rss)
-- sc-site-rss2-url - The RSS 2.0 feed URL (/feed)
-- sc-site-comments-atom-url - The comments Atom feed URL (/comments/feed)
-- sc-site-comments-rss2-url - The comments RSS 2.0 feed URL (/comments/feed)
-- sc-php-server-info - Display data from the PHP $_SERVER global e.g. [sv slug="sc-server-info" field="SERVER_SOFTWARE"]. <a href="http://php.net/manual/en/reserved.variables.server.php" rel="noopener" target="_blank">Allowed values for field attribute</a>.
-- sc-php-unique-id - Generate a unique ID. Based upon <a href="http://php.net/manual/en/function.uniqid.php" rel="noopener" target="_blank">uniqid()</a>. If you wish the unique ID to be prefixed, add a the prefix attribute e.g. [sv slug="sc-php-unique-id" prefix="yeken"]
-- sc-php-timestamp - Display the current unix timestamp. Based upon <a href="http://php.net/manual/en/function.time.php" rel="noopener" target="_blank">time()</a>.
-- sc-php-random-number - Display a random number. Based upon <a href="http://php.net/manual/en/function.rand.php" rel="noopener" target="_blank">rand()</a>. It also supports the optional arguments of min and max e.g. [sv slug="sc-php-random-number" min="5" max="20" ]
-- sc-php-random-string - Display a random string of characters. It also supports the optional argument of "length". This specifies the number of characters you wish to display (default is 10) [sv slug="sc-php-random-string" length="15"]
-- sc-php-post-value - Display a value from the $_POST array. The "key" arguments specifies which array value to render. It also supports the optional arguments of "default". If there is no value in the array for the given "key" then the "default" will be displayed. [sv slug="sc-php-post-value" key="username" default="Not Found"]
-- sc-php-get-value - Display a value from the $_GET array. The "key" arguments specifies which array value to render. It also supports the optional arguments of "default". If there is no value in the array for the given "key" then the "default" will be displayed. [sv slug="sc-php-get-value" key="username" default="Not Found"]
-- sc-php-info - Display PHP Info
-- sc-post-id - Display ID for the current post.
-- sc-post-author - Display the author's display name or ID. The optional argument "field" allows you to specify whether you wish to display the author's "display-name" or "id". [sv slug="sc-post-author" field="id" ]
-- sc-post-counts - Display a count of posts for certain statuses. Using the argument status, specify whether to return a count for all posts that have a status of "publish" (default), "future", "draft", "pending" or "private". [sv slug="sc-post-counts" status="draft"]
-- sc-user-counts - Display a count of all WordPress users or the number of WordPress users for a given role e.g. [sv slug="sc-user-counts" role="subscriber"] or [sv slug="sc-user-counts"].
-- sc-user-profile-photo - Display the WordPress profile photo for the logged in user e.g. [sv slug="sc-user-profile-photo" width="150"] or [sv slug="sc-user-profile-photo"]. Please note, width defaults to 96px.
-- sc-woocommerce - Display a WooCommerce user meta field field e.g. billing_phone. 
+== Useful links ==
 
-**Free Shortcodes**
-
-The plugin comes with the following free shortcodes:
-
-- sc-todays-date - Displays today's date. Default is UK format (DD/MM/YYYY). Format can be changed by adding the parameter format="m/d/Y" onto the shortcode. Format syntax is based upon PHP date: <a href="http://php.net/manual/en/function.date.php" target="_blank">http://php.net/manual/en/function.date.php</a>
-- sc-user-ip - Display the current user's IP address.
-- sc-user-agent - Display the current user's User Agent
-- sc-site-url - The Site address (URL) (set in Settings > General)
-- sc-site-title - Displays the site title.
-- sc-admin-email - Admin email (set in Settings > General)
-- sc-page-title - Displays the page title.
-- sc-login-page - Wordpress login page. Add the parameter "redirect" to specify where the user is taken after a successful login e.g. redirect="http://www.google.co.uk".
-- sc-privacy-url - Displays the privacy page URL.
-- sc-username - Display the logged in username.
-- sc-user-id - Display the current user's ID.
-- sc-user-email - Display the current user's email address.
-- sc-first-name - Display the current user's username.
-- sc-last-name - Display the current user's last name.
-- sc-display-name - Display the current user's display name.
-
-**Features**
-
-- Insert the same piece of data, HTML, text, etc throughout your site and change in only one place.
-- TinyMCE editor
-- Place other WordPress shortcodes within yours
-- Comes with a range of pre-made shortcodes
-- Pass your own parameters into a shortcode
-
-* Developed by YeKen.uk *
-
-Paypal Donate: email@YeKen.uk
-
-== Installation ==
-
-1. Login into Wordpress Admin Panel
-2. Goto Plugins > Add New
-3. Search for "Snippet Shortcodes"
-4. Click Install now and activate plugin
-5. Goto Settings > Snippet Shortcodes
-
-== Frequently Asked Questions ==
-
-= How do I add / edit / delete Snippet Shortcodes =
-
-Login into Wordpress Admin Panel and goto Settings > Snippet Shortcodes
+* [Technical Documentation](https://snippet-shortcodes.yeken.uk/) – Installation and detailed documentation on how to use the plugin.
+* [Trial license](https://shop.yeken.uk/get-a-trial-license/) – Get a trial license to try out all the features.
+* [Upgrade](https://shop.yeken.uk/product/shortcode-variables/) – purchase a license to receive all of the features.
 
 == Screenshots ==
 
-1. View all Snippet Shortcodes created.
-2. Add a new Snippet Shortcode
-3. Edit an existing Snippet Shortcode
-4. Using the Snippet Shortcodes into a page
-5. Snippet Shortcodes rendered in a page
+1. [Custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) list, with inline editor, duplicate, and delete options. 
+2. Add a new [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
+3. Edit an existing [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
+4. Embeded the [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) into a page.
+5. A [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) rendered on a page.
+6. Admin page listing the [collection of out-of-the-box shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-premium.html) available.
+7. [CSV import](https://snippet-shortcodes.yeken.uk/csv-import.html) screen.
 
 == Upgrade Notice ==
 
@@ -148,11 +75,16 @@ Login into Wordpress Admin Panel and goto Settings > Snippet Shortcodes
 
 == Changelog ==
 
+= 4.2.4 =
+
+* Change: Updated Readme.txt.
+
 = 4.2.3 =
 
 * Improvement: All shortcodes are now editable even if there is no premium license. Previously only the top 10 shortcodes could be edited.
 * Improvement: Display update messages from Yeken.uk in Admin notices.
 * Change: Slugs can no longer be changed if not in Premium.
+* Bug fix: Fixed issues where save notifications etc appeared incorrectly within title boxes.
 
 = 4.2.2 =
 
@@ -278,7 +210,7 @@ Login into Wordpress Admin Panel and goto Settings > Snippet Shortcodes
 
 = 3.2 =
 
-* New Shortcode: "sc-user-profile-photo" - display the current user's profile photo.
+* New Shortcode: "sc-user-profile-photo" – display the current user's profile photo.
 
 = 3.1.1 =
 
@@ -286,8 +218,8 @@ Login into Wordpress Admin Panel and goto Settings > Snippet Shortcodes
 
 = 3.1 =
 
-* New Shortcode: "sc-site-current-url" - get the current URL.
-* New Shortcode: "sc-site-register-url" - get the URL for the WordPress registration page.
+* New Shortcode: "sc-site-current-url" – get the current URL.
+* New Shortcode: "sc-site-register-url" – get the URL for the WordPress registration page.
 * Improvement: Added localised strings so plugin can now be translated.
 * Improvement: Licenses are now checked daily and on each upgrade to ensure they are still valid.
 * Bug fix: Missing array element throwing error on shortcode listing page.
@@ -326,7 +258,7 @@ Login into Wordpress Admin Panel and goto Settings > Snippet Shortcodes
 
 = 2.3 =
 
-* Improvement: sc-user-counts - Display a count of all WordPress users or the number of WordPress users for a given role e.g. [sv slug="sc-user-counts" role="subscriber"] or [sv slug="sc-user-counts"].
+* Improvement: sc-user-counts – Display a count of all WordPress users or the number of WordPress users for a given role e.g. [sv slug="sc-user-counts" role="subscriber"] or [sv slug="sc-user-counts"].
 
 = 2.2.1 =
 
@@ -360,38 +292,38 @@ Login into Wordpress Admin Panel and goto Settings > Snippet Shortcodes
 
 = 1.7.4 =
 
-- Version and readme.txt updated to reflect 4.8 compatibility.
+– Version and readme.txt updated to reflect 4.8 compatibility.
 
 = 1.7.3 =
 
-- BUG FIX: On the very first load of a variable it would return nothing. This was due to a bug in the code. The first load would display nothing to the user, however it would cache the shortcode correctly. Upon the next visit, the shortcode would render correctly!
+– BUG FIX: On the very first load of a variable it would return nothing. This was due to a bug in the code. The first load would display nothing to the user, however it would cache the shortcode correctly. Upon the next visit, the shortcode would render correctly!
 
 = 1.7.2 =
 
-- When creating a new shortcode, "Disabled" is set by default to "No".
-- Additional upgrade check added. This compares the previously stored version number against the new version number. If there is a difference, it will run the DB table check again.
+– When creating a new shortcode, "Disabled" is set by default to "No".
+– Additional upgrade check added. This compares the previously stored version number against the new version number. If there is a difference, it will run the DB table check again.
 
 = 1.7.1 =
 
-- BUG FIX: Tweak made to "on activate" so the code required to change the relevant database tables is called correctly.
+– BUG FIX: Tweak made to "on activate" so the code required to change the relevant database tables is called correctly.
 
 = 1.7 =
 
-- Disable a variable. You can now disable a variable via the admin panel - if a shortcode is disabled nothing will be rendered in it's place (will remove the shortcode though).
+– Disable a variable. You can now disable a variable via the admin panel – if a shortcode is disabled nothing will be rendered in it's place (will remove the shortcode though).
 
 = 1.6.1 =
 
-- BUG FIX: Array declaration caused 500 error on non PHP 7
+– BUG FIX: Array declaration caused 500 error on non PHP 7
 
 = 1.6 =
 
-- Now supports custom parameters. You can now add parameters when inserting a shortcode and specify where in the shortcode those parameters should appear.
-- BUG FIX: Removed a stray var_dump()
+– Now supports custom parameters. You can now add parameters when inserting a shortcode and specify where in the shortcode those parameters should appear.
+– BUG FIX: Removed a stray var_dump()
 
 = 1.5.1 =
 
 * BUG FIX: "Add new" link for message "You haven't created any shortcodes yet." wasn't working correctly
-* BUG FIX: Typo - "Shotcodes" instead of "Shortcodes" on "Your Shortcodes" page
+* BUG FIX: Typo – "Shotcodes" instead of "Shortcodes" on "Your Shortcodes" page
 
 = 1.5 =
 
@@ -400,16 +332,16 @@ Login into Wordpress Admin Panel and goto Settings > Snippet Shortcodes
 
 = 1.4 =
 * Added the new pre-made shortcodes:
- * sc-login-page - Wordpress login page. Add the parameter "redirect" to specify where the user is taken after a successful login e.g. redirect="http://www.google.co.uk".
- * sc-username - Display the logged in username.
- * sc-user-id - Display the current user's ID
- * sc-user-ip - Display the current user's IP address.
- * sc-user-email - Display the current user's email address.
- * sc-username - Display the current user's username.
- * sc-first-name - Display the current user's first name.
- * sc-last-name - Display the current user's last name.
- * sc-display-name - Display the current user's display name.
- * sc-user-agent - Display the current user's user agent
+ * sc-login-page – Wordpress login page. Add the parameter "redirect" to specify where the user is taken after a successful login e.g. redirect="http://www.google.co.uk".
+ * sc-username – Display the logged in username.
+ * sc-user-id – Display the current user's ID
+ * sc-user-ip – Display the current user's IP address.
+ * sc-user-email – Display the current user's email address.
+ * sc-username – Display the current user's username.
+ * sc-first-name – Display the current user's first name.
+ * sc-last-name – Display the current user's last name.
+ * sc-display-name – Display the current user's display name.
+ * sc-user-agent – Display the current user's user agent
 * BUG FIX: Deleting a shortcode from cache when deleted from Admin panel. This stops it getting rendered when removed from the plugin.
 
 = 1.3.1 =

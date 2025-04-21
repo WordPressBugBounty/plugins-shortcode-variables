@@ -2,7 +2,7 @@
 
 The biggest advantage of Snippet Shortcodes is the ability to create a library of shortcodes. Each shortcode allows you to render the same content throughout your site and only requires you to update the content in one place.
 
-The initial screen (“Shortcode Snippets” > “Your Shortcodes”) will list all of your existing shortcodes. If you have the [Premium version](https://shop.yeken.uk/product/shortcode-variables/) then you will have the ability to edit and toggle settings inline. For each shortcode you have the ability to edit or delete a shortcode.
+The initial screen (“Snippet Shortcodes” > “Your Shortcodes”) will list all of your existing shortcodes. If you have the [Premium version](https://shop.yeken.uk/product/shortcode-variables/) then you will have the ability to edit and toggle settings inline. For each shortcode you have the ability to edit or delete a shortcode.
 
 [![List]({{ site.baseurl }}/assets/images/list.png)]({{ site.baseurl }}/assets/images/list.png)
 

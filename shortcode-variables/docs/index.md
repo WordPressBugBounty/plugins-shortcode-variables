@@ -1,4 +1,4 @@
-# What is Shortcode Snippets?
+# What is Snippet Shortcodes?
 
 *Do you want to use the same snippet of text or HTML throughout your site but only have to change the value in one location? If so, this plugin maybe just what you need!*
 
@@ -21,17 +21,17 @@ The plugin is available in a [Free](https://wordpress.org/plugins/shortcode-vari
 
 ## Getting Started  
   
-1. Ensure your hosting matches the minimum requirements specified by [WordPress Requirements](https://wordpress.org/about/requirements/). Unfortunately, Shortcode Snippets may not work on older versions.  
-2. Install the [Shortcode Snippets plugin](https://wordpress.org/plugins/shortcode-variables/).  
-3. Within your WordPress Admin area, navigate to “Plugins” > “Add New”. Search for “Shortcode Snippets” and click “Install Now”.  
+1. Ensure your hosting matches the minimum requirements specified by [WordPress Requirements](https://wordpress.org/about/requirements/). Unfortunately, Snippet Shortcodes may not work on older versions.  
+2. Install the [Snippet Shortcodes plugin](https://wordpress.org/plugins/shortcode-variables/).  
+3. Within your WordPress Admin area, navigate to “Plugins” > “Add New”. Search for “Snippet Shortcodes” and click “Install Now”.  
 4. Activate the plugin.  
 5. [Upgrade the plugin]({{ site.baseurl}}/upgrade.html) if you require additional [features]({{ site.baseurl}}/features.html). We offer a free trial of the Premium versions of the plugin, [get your free trial now](https://shop.yeken.uk/get-a-trial-license/).
-6. Configure the plugin. Navigate to “Shortcode Snippets” > “Your Shortcodes” and review / modify each setting to meet your needs.  
+6. Configure the plugin. Navigate to “Snippet Shortcodes” > “Your Shortcodes” and review / modify each setting to meet your needs.  
 7. To get started, create your own shortcode. Within the WP Dashboard, navigate to "Snippet Shortcodes" > "Your Snippet Shortcodes". From here click "Add a new Shortcode snippet" and follow the steps.
 
 ## Free Trial 
 
 If you would like to trial the [Premium](https://shop.yeken.uk/product/shortcode-variables/) version of the plugin, then we are happy to provide a free trial. [Get your free trial now](https://shop.yeken.uk/get-a-trial-license/). 
 
-## Translate Shortcode Snippets  
+## Translate Snippet Shortcodes  
 All [YeKen](https://www.yeken.uk) plugins are fully translatable and can be translated with [Loco Translate](https://en-gb.wordpress.org/plugins/loco-translate/). For further information, please read our [guide on translating YeKen plugins]({{ site.baseurl}}/translate.html).
