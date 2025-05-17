@@ -1,5 +1,25 @@
 jQuery( document ).ready(function ($) {
 
+    var tooltips = null;
+
+    if ( 'yes' == sh_cd['tooltips-enabled'] ) {
+      tooltips = new $.Zebra_Tooltips($('.sh-cd-tooltip'));
+    }  
+  
+  /**
+   * Select Editor
+   */
+    $( '.sh-cd-button-editor-select' ).on('click', function( e ) {
+      
+      e.preventDefault();
+
+      if ( false === confirm( sh_cd[ 'text-editor-change' ] ) ) {
+        return;
+      }
+      
+      window.location.replace( $( this ).attr( 'href' ) );
+    });
+
     /**
      * Show save button
      */
@@ -12,6 +32,36 @@ jQuery( document ).ready(function ($) {
         $( '#sh-cd-save-button-' + id ).removeClass( 'sh-cd-hide' );
 
     });
+  
+    /**
+     * Sluggify name
+     */
+    $( '.sh-cd-slug-validation' ).bind('input propertychange', function( e ) {
+
+        let sluggified = sh_cd_sluggify( $( this ).val() );
+        
+        $( '.sh-cd-slug-validation' ).val( sluggified );
+        $( '#sh-cd-shortcode-slug-preview').html( sluggified );
+        $( '.sh-cd-shortcode-slug i').attr( 'data-clipboard-text', '[sv slug="' + sluggified + '"]').removeClass( 'sh-cd-hide' );
+        $( '.sh-cd-shortcode-slug').removeClass( 'sh-cd-hide' );
+    });
+
+    /**
+     * In essence, this is meant to emulate the WP function sanitize_key()
+     * https://developer.wordpress.org/reference/functions/sanitize_key/
+     **/ 
+    function sh_cd_sluggify( slug ) {
+
+      if ( !slug ) {
+        return slug;
+      }
+
+      slug = slug.replace(/\s+/g, '-').toLowerCase();
+
+      slug = slug.replace(/[^a-z0-9-]/g, '');
+
+      return slug;
+    }
 
    /**
    * Show inline form
@@ -63,23 +113,18 @@ jQuery( document ).ready(function ($) {
           $( '#sh-cd-add-inline-slug' ).val( '' );
           $( '#sh-cd-add-inline-global' ).prop( "checked", false )
           $( '#sh-cd-add-inline-enabled' ).prop( "checked", false )
-
+          $( '#sh-cd-shortcode-slug-preview' ).html( '' );
+          $( '.sh-cd-shortcode-slug i').attr( 'data-clipboard-text', '[sv slug=""]').addClass( 'sh-cd-hide' );
+        
           $( '#sh-cd-add-button' ).html('<i class="fas fa-check"></i> ' + sh_cd[ 'text-saved' ]);
         }
 
         $( '#sh-cd-add-inline-results' ).removeClass( 'sh-cd-hide' );
 
-        let text = $( '#sh-cd-add-inline-results span' ).text();
-
-        if ( '' !== text ) {
-          text += ', ';
-        }
-
-        text += ' [sv slug="' + response.shortcode.slug + '"]';
-
-        $( '#sh-cd-add-inline-results span' ).text( text );
-
       } else {
+
+        $( '#sh-cd-add-button' ).html('<i class="fas fa-save"></i> ' + sh_cd[ 'text-add' ]);
+
         alert( response.error_message );
       }
     }
@@ -116,6 +161,11 @@ jQuery( document ).ready(function ($) {
         let data = {};
         data['id'] = $( this ).data( 'id' );
 
+        if ( 'yes' == sh_cd['tooltips-enabled'] ) {
+          var element = $( this );
+          tooltips.hide(element, true);
+        }
+      
         $( '#' + $( this ).attr( 'id' ) + ' i' ).removeClass( 'fa-trash-alt' ).addClass( 'fa-spinner fa-spin' );
 
         sh_cd_post_data_to_WP( 'delete_shortcode', data, sh_cd_handle_delete_shortcode );
@@ -280,25 +330,11 @@ jQuery( document ).ready(function ($) {
      */
     function sh_cd_show_upgrade_buttons() {
         $( '.sh-cd-upgrade-button' ).removeClass( 'sh-cd-hide' )
-    }
-
-    /**
-     * Dismiss marketing messages
-     */
-    $( '.sh-cd-update-notice' ).on('click', '.notice-dismiss', function ( event ) {
-
-      event.preventDefault();
-     
-      if( false == $( this ).parent().hasClass( 'sh-cd-update-notice' ) ){
-        return;
-      }
-    
-      $.post( ajaxurl, {
-          action: 'sh_cd_dismiss_notice',
-          url: ajaxurl,
-          security: $( this ).parent().data( 'nonce' ),
-          update_key: $( this ).parent().data('update-key')
-      });
-
-  });
+    };
 });
+
+/**
+ * Copy to clipboard
+ */
+var btns = document.querySelectorAll('.sh-cd-copy-trigger');
+var clipboard = new ClipboardJS(btns);

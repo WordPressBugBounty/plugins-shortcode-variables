@@ -1,33 +1,30 @@
 # What is Snippet Shortcodes?
 
-*Do you want to use the same snippet of text or HTML throughout your site but only have to change the value in one location? If so, this plugin maybe just what you need!*
+> A WordPress plugin that allows you to a library of custom shortcodes and reusable content, and seamlessly insert them into your posts and pages for streamlined, consistent site updates. Plus, get a head start with a built-in selection of ready-made shortcodes to use out of the box.
 
-Create your own Shortcodes and assign content to them. Using the standard WP editor, you can add text, HTML, JavaScript, images or other elements that your WordPress install and plugins allow. The main advantage is ability to create a shortcode once and re-use it throughout your site.
+Looking to reuse the same snippet of text or HTML across your website while only updating it in one spot? [Snippet Shortcodes](https://snippet-shortcodes.yeken.uk/) could be exactly what you need. With this tool, you can generate a library of custom shortcodes and embed them into your WordPress content. Using the familiar WordPress editor, you can insert anything from text and HTML to JavaScript, images, or any other elements supported by your theme or plugins. The biggest benefit? You only need to create the shortcode once, and you can then deploy it site-wide, saving time and ensuring consistency.
 
-```
-[sv slug="your-slug-name"]
-```
+**Quick example**
 
-The plugin is available in a [Free](https://wordpress.org/plugins/shortcode-variables/) and [Premium](https://shop.yeken.uk/product/shortcode-variables/) versions. This documentation will help you to set up Meal Tracker to suit your business.  
-  
-## Features  
-  
-* Create a shortcode once and place in multiple locations throughout your website.
-* Update the shortcode and watch it change throughout the website.
-* Parameters to extend your shortcodes.
-* Free and Premium helper shortcodes to make life easier.
-* Multi-site support.
-* Process shortcodes within WordPress menu titles.
+By default, you tend to create content once and then copy and paste it across your site as needed. Later, when updates are required, you have to track down every instance, edit each one individually, and save every page or post - making consistent updates a tedious process. Instead, put a snippet like this into one of our [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) and get a shortcode you can paste into your content. To update, all you need to do is edit the [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) and your entire site will update consistently.
 
-## Getting Started  
-  
-1. Ensure your hosting matches the minimum requirements specified by [WordPress Requirements](https://wordpress.org/about/requirements/). Unfortunately, Snippet Shortcodes may not work on older versions.  
-2. Install the [Snippet Shortcodes plugin](https://wordpress.org/plugins/shortcode-variables/).  
-3. Within your WordPress Admin area, navigate to “Plugins” > “Add New”. Search for “Snippet Shortcodes” and click “Install Now”.  
-4. Activate the plugin.  
-5. [Upgrade the plugin]({{ site.baseurl}}/upgrade.html) if you require additional [features]({{ site.baseurl}}/features.html). We offer a free trial of the Premium versions of the plugin, [get your free trial now](https://shop.yeken.uk/get-a-trial-license/).
-6. Configure the plugin. Navigate to “Snippet Shortcodes” > “Your Shortcodes” and review / modify each setting to meet your needs.  
-7. To get started, create your own shortcode. Within the WP Dashboard, navigate to "Snippet Shortcodes" > "Your Snippet Shortcodes". From here click "Add a new Shortcode snippet" and follow the steps.
+```<a href="https://www.facebook.com/yekenuk" target="_blank" rel="noopener">Our Facebook</a>```
+
+to
+
+```[sv slug="facebook-link"]```
+
+## Features
+
+Visit <a href="{{ site.baseurl }}/features.html">our features</a> page to learn more about what Snippet Shortcodes plugin can offer you. 
+
+## Pricing Plans
+
+We're very transparent on our pricing and usually offer two plans: *yearly* and *lifetime*. For further information, please visit [our upgrade page](https://shop.yeken.uk/product/shortcode-variables/).
+
+## Getting support
+
+If you have a question or an issue, please ask on the plugin's [WordPress support page](https://wordpress.org/support/plugin/shortcode-variables/), and we'll be more than happy to help.
 
 ## Free Trial 
 

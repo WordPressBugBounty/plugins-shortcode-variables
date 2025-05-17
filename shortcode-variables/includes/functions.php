@@ -3,6 +3,46 @@
 defined('ABSPATH') or die('Jog on!');
 
 /**
+ * Is the Premium plugin enabled and do we have a valid license?
+ *
+ * @return bool
+ */
+function sh_cd_is_premium() {
+
+	if ( false === sh_cd_is_premium_plugin_activated() ) {
+		return false;
+	}
+
+	return apply_filters( 'sh-cd-license-is-premium', false );
+}
+
+/**
+ * Is Premium plugin enabled?
+ */
+function sh_cd_is_premium_plugin_activated() {
+	return defined( 'YK_SS_PLUGIN_NAME' );
+}
+
+/**
+ *	Generate a site hash to identify this site.
+	**/
+function sh_cd_generate_site_hash() {
+
+	$site_hash = get_option( 'sh-cd-hash' );
+
+	// Generate a basic site key from URL and plugin slug
+	if( false == $site_hash ) {
+
+		$site_hash = md5( 'yeken-sh-cd-' . site_url() );
+		$site_hash = substr( $site_hash, 0, 6 );
+
+		update_option( 'sh-cd-hash', $site_hash );
+
+	}
+	return $site_hash;
+}
+
+/**
  * Save / Insert a shortcode
  *
  * @return bool
@@ -10,10 +50,10 @@ defined('ABSPATH') or die('Jog on!');
 function sh_cd_shortcodes_save_post() {
 
 	// Capture the raw $_POST fields, the save functions will process and validate the data
-	$shortcode = sh_cd_get_values_from_post( [ 'id', 'slug', 'previous_slug', 'data', 'disabled', 'multisite' ] );
+	$shortcode = sh_cd_get_values_from_post( [ 'id', 'slug', 'previous_slug', 'data', 'disabled', 'multisite', 'editor' ] );
 
 	// If we are not premium, then the user is not allowed to change the site slug (otherwise they could just re-use variables and by pass the limit)
-	if ( ! SH_CD_IS_PREMIUM && false === empty( $shortcode[ 'previous_slug' ] ) ) {
+	if ( ! sh_cd_is_premium() && false === empty( $shortcode[ 'previous_slug' ] ) ) {
 		$shortcode[ 'slug' ] = $shortcode[ 'previous_slug' ];
 	}
 
@@ -55,7 +95,7 @@ function sh_cd_slug_generate( $slug, $exising_id = NULL ) {
         return NULL;
     }
 
-	$slug = sanitize_title( $slug );
+	$slug = sanitize_key( $slug );
 
     $original_slug = $slug;
 
@@ -81,7 +121,7 @@ function sh_cd_slug_generate( $slug, $exising_id = NULL ) {
  */
 function sh_cd_clone( $id ) {
 
-	if( false === SH_CD_IS_PREMIUM ) {
+	if( false === sh_cd_is_premium() ) {
 		return true;
 	}
 
@@ -334,73 +374,6 @@ function sh_cd_toggle_multisite( $id ) {
 	return NULL;
 }
 
-
-/**
- * Display a table of premade shortcodes
- *
- * @param string $display
- * @return string
- */
-function sh_cd_display_premade_shortcodes( $display = 'all' ) {
-
-	$premium_user = SH_CD_IS_PREMIUM;
-	$upgrade_link = sprintf( '<a class="button" href="%1$s"><i class="fas fa-check"></i> %2$s</a>', sh_cd_license_upgrade_link(), __('Upgrade now', SH_CD_SLUG ) );
-
-	switch ( $display ) {
-		case 'free':
-			$shortcodes = sh_cd_shortcode_presets_free_list();
-			$show_premium_col = false;
-			break;
-		case 'premium':
-			$shortcodes = sh_cd_shortcode_presets_premium_list();
-			$show_premium_col = false;
-			break;
-		default:
-			$shortcodes = sh_cd_presets_both_lists();
-			$show_premium_col = true;
-	}
-
-	$html = sprintf('<table class="widefat sh-cd-table" width="100%%">
-                <tr class="row-title">
-                    <th class="row-title" width="30%%">%s</th>', __('Shortcode', SH_CD_SLUG ) );
-
-                     if ( true === $show_premium_col) {
-	                     $html .= sprintf( '<th class="row-title">%s</th>', __('Premium', SH_CD_SLUG ) );
-                     }
-
-					$html .= sprintf( '<th width="*">%s</th>
-											</tr>', __('Description', SH_CD_SLUG ) );
-
-	$class = '';
-
-		foreach ( $shortcodes as $key => $data ) {
-
-			$class = ($class == 'alternate') ? '' : 'alternate';
-
-			$shortcode = '[' . SH_CD_SHORTCODE. ' slug="' . $key . '"]';
-
-			$premium_shortcode = ( true === isset( $data['premium'] ) && true === $data['premium'] );
-
-			$html .= sprintf( '<tr class="%s"><td>%s</td>', $class, esc_html( $shortcode ) );
-
-
-            if ( true === $show_premium_col) {
-
-                $html .= sprintf( '<td align="middle">%s%s</td>',
-                    ( true === $premium_shortcode && true === $premium_user ) ? '<i class="fas fa-check"></i>' : '',
-                    ( true == $premium_shortcode && false === $premium_user ) ? $upgrade_link : ''
-                );
-            }
-
-			$html .= sprintf( '<td>%s</td></tr>', wp_kses_post( $data['description'] ) );
-
-        }
-
-    $html .= '</table>';
-
-	return $html;
-}
-
 /**
  * Display an upgrade button
  *
@@ -411,13 +384,37 @@ function sh_cd_upgrade_button( $css_class = '', $link = NULL ) {
 
     $link = ( false === empty( $link ) ) ? $link : SH_CD_UPGRADE_LINK . '?hash=' . sh_cd_generate_site_hash() ;
 
-	echo sprintf('<a href="%s" class="button-primary sh-cd-upgrade-button%s"><i class="far fa-credit-card"></i> %s £%s %s</a>',
+	$price = sh_cd_license_price();
+	$price = ( false === empty( $price ) ) ? sprintf( '- £%s %s', $price, __( 'a year ', SH_CD_SLUG ) ) : '';
+
+	echo sprintf('<a href="%s" class="button-primary sh-cd-upgrade-button sh-cd-button %s"><i class="far fa-star"></i> %s %s</a>',
 		esc_url( $link ),
 		esc_attr( ' ' . $css_class ),
-        __( 'Upgrade to Premium for ', SH_CD_SLUG ),
-        esc_html( sh_cd_license_price() ),
-		__( 'a year ', SH_CD_SLUG )
+        __( 'Purchase a license ', SH_CD_SLUG ),
+        $price
 	);
+}
+
+/**
+ * Display an upgrade button
+ *
+ * @param string $css_class
+ * @param null $link
+ */
+function sh_cd_premium_shortcode_download( $return = false ) {
+
+    $link = SH_CD_GET_PREMIUM_LINK . '?hash=' . sh_cd_generate_site_hash();
+
+	$html = sprintf('<a href="%s" class="button-primary sh-cd-button sh-cd-upgrade-button"><i class="fas fa-download"></i> %s</a>',
+		esc_url( $link ),
+        __( 'Download Premium Plugin', SH_CD_SLUG )
+	);
+
+	if ( true === $return ) {
+		return $html;
+	}
+
+	echo $html;
 }
 
 /**
@@ -431,7 +428,7 @@ function sh_cd_is_multisite_enabled() {
 		return false;
 	}
 
-	if ( false === SH_CD_IS_PREMIUM ) {
+	if ( false === sh_cd_is_premium() ) {
 		return false;
 	}
 
@@ -471,7 +468,7 @@ function sh_cd_multisite_slugs() {
  */
 function sh_cd_reached_free_limit() {
 
-	if ( true === SH_CD_IS_PREMIUM ) {
+	if ( true === sh_cd_is_premium() ) {
 		return false;
 	}
 
@@ -481,7 +478,14 @@ function sh_cd_reached_free_limit() {
 		return false;
 	}
 
-	return ( (int) $existing_shortcodes >= SH_CD_FREE_SHORTCODE_LIMIT );
+	return ( (int) $existing_shortcodes >= sh_cd_get_free_limit() );
+}
+
+/**
+ * Return free limit for shortcodes
+ */
+function sh_cd_get_free_limit() {
+	return 10;
 }
 
 /**
@@ -491,7 +495,7 @@ function sh_cd_reached_free_limit() {
 function sh_cd_permission_role() {
 
 	// If not premium, then admin only
-	if ( false === SH_CD_IS_PREMIUM ) {
+	if ( false === sh_cd_is_premium() ) {
 		return 'manage_options';
 	}
 
@@ -518,7 +522,7 @@ function sh_cd_permission_check() {
  */
 function sh_cd_is_shortcode_db_value_by_id_enabled() {
 
-    if ( false === SH_CD_IS_PREMIUM ) {
+    if ( false === sh_cd_is_premium() ) {
         return false;
     }
 
@@ -543,13 +547,38 @@ function sh_cd_display_pro_upgrade_notice( ) {
 	<div class="postbox sh-cd-advertise-premium">
 		<h3 class="hndle"><span><?php echo __( 'Upgrade Snippet Shortcodes and get more features!', SH_CD_SLUG ); ?> </span></h3>
 		<div style="padding: 0px 15px 0px 15px">
-			<p><a href="<?php echo esc_url( admin_url('admin.php?page=sh-cd-shortcode-variables-license') ); ?>" class="button-primary"><?php echo __( 'Upgrade now', SH_CD_SLUG ); ?></a></p>
+			<p><a href="<?php echo esc_url( admin_url('admin.php?page=sh-cd-shortcode-variables-upgrade') ); ?>" class="button-primary sh-cd-upgrade-button"><i class="fa-regular fa-star"></i> <?php echo __( 'Get Premium', SH_CD_SLUG ); ?></a></p>
 		</div>
 	</div>
 
 	<?php
 }
 
+/**
+ * Display a star to prompt for a Premioum upgrade
+ *
+ * @param bool $pro_plus
+ */
+function sh_cd_display_premium_star() {
+
+	if ( true === sh_cd_is_premium() ) {
+		return '';	// We don't want to show the star if the user has already upgraded
+	}
+
+	return sprintf ('<a href="%s"><i class="fa-regular fa-star"></i></a>', 
+						esc_url( admin_url('admin.php?page=sh-cd-shortcode-variables-upgrade') )
+					);
+}
+   
+/**
+ * Display info symbol with tooltip
+ */
+function sh_cd_display_info_tooltip( $text ) {
+
+	return sprintf ('<i class="fa-regular fa-circle-question sh-cd-tooltip" title="%s">', 
+						esc_html( $text )
+					);
+}
 
 /**
  * Process a CSV attachment and import into database
@@ -566,7 +595,7 @@ function sh_cd_import_csv( $attachment_id, $dry_run = true ) {
 		return 'You do not have the correct admin permissions';
 	}
 
-	if ( false === SH_CD_IS_PREMIUM ) {
+	if ( false === sh_cd_is_premium() ) {
 		return 'This is a premium feature';
 	}
 
@@ -732,4 +761,46 @@ function sh_cd_wp_kses( $value ) {
 	$basic_tags[ 'li' ]		= [ 'class' => true ];	
 
 	return wp_kses( $value, $basic_tags );
+}
+
+/**
+ * Return the current url
+ */
+function sh_cd_get_current_url() {
+	$protocol = (
+		( isset($_SERVER['HTTPS'] ) && 'on' == $_SERVER['HTTPS'] ) ||
+		( isset($_SERVER['SERVER_PORT'] ) && 443 == $_SERVER['SERVER_PORT'] )
+	) ? 'https://' : 'http://';
+
+	return $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
+}
+
+/**
+ * Get selected default editor
+ */
+function sh_cd_default_editor_get() {
+	return get_option( 'sh-cd-option-default-editor', 'tinymce' );
+}
+
+/**
+ * Is editor valid
+ */
+function sh_cd_editors_is_valid( $editor ) {
+	$editors = sh_cd_editors_options();
+
+	return ! empty( $editors[ $editor ] );
+}
+
+/**
+ * Return valid editors
+ */
+function sh_cd_editors_options( $keys_only = true ) {
+	return [ 'tinymce' => __( 'WordPress Editor', SH_CD_SLUG ), 'code' => __( 'HTML Editor', SH_CD_SLUG ) ];
+}
+
+/**
+ * Are tooltips enabled?
+ */
+function sh_cd_tooltips_is_enabled() {
+	return ( 'yes' === get_option( 'sh-cd-option-tool-tips-enabled', 'yes' ) );
 }

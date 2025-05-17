@@ -11,7 +11,7 @@ function sh_cd_admin_page_import() {
 	$importing 	= false;
 	$output		= '';
 
-	if ( true === SH_CD_IS_PREMIUM &&
+	if ( true === sh_cd_is_premium() &&
 			false === empty( $_POST[ 'attachment-id' ] ) ){
 
 		$importing 	= true;
@@ -26,7 +26,7 @@ function sh_cd_admin_page_import() {
             <div id="post-body-content">
                 <div class="meta-box-sortables ui-sortable">
                     <?php
-						if ( false === SH_CD_IS_PREMIUM ) {
+						if ( false === sh_cd_is_premium() ) {
 							sh_cd_display_pro_upgrade_notice();
 						}
                     ?>
@@ -40,10 +40,10 @@ function sh_cd_admin_page_import() {
                         	<?php if ( false === $importing ): ?>
 								<div class="sh-cd-form-row">
 									<p>
-										<?php echo __( 'Please select a CSV file to import one or shortcodes into your collection.', SH_CD_SLUG ); ?>
+										<?php echo __( 'Please select a CSV file to import one or more shortcodes into your collection.', SH_CD_SLUG ); ?>
 										<a href="https://snippet-shortcodes.yeken.uk/csv-import.html" rel="noopener noreferrer" target="_blank"><?php echo __( 'Read more about CSV imports and the required format', SH_CD_SLUG ); ?>.</a>
 									</p>
-									<input id="select_csv" type="button" class="button" value="<?php echo __( 'Select CSV file', SH_CD_SLUG ); ?>" />
+									<input id="select_csv" type="button" class="button sh-cd-button" value="<?php echo __( 'Select CSV file', SH_CD_SLUG ); ?>" />
 									<br />
 								</div>
 								<div class="sh-cd-hide sh-cd-import-selected" id="selected-form" >
@@ -58,7 +58,7 @@ function sh_cd_admin_page_import() {
 											<label for="dry-run"><?php echo __( 'Dry run mode. This will do basic tests on the file without performing an import.', SH_CD_SLUG ); ?></label>
 										</div>
 										<div class="sh-cd-form-row">
-											<input type="submit" class="button button-primary" value="<?php echo __( 'Import CSV', SH_CD_SLUG ); ?>" <?php if ( false === SH_CD_IS_PREMIUM ) { echo 'disabled="disabled"'; } ?> />
+											<input type="submit" class="button button-primary sh-cd-button" value="<?php echo __( 'Import CSV', SH_CD_SLUG ); ?>" <?php if ( false === sh_cd_is_premium() ) { echo 'disabled="disabled"'; } ?> />
 										</div>
 									</form>
 								</div>
@@ -83,7 +83,7 @@ function sh_cd_admin_page_import() {
 
 				event.preventDefault();
 
-				<?php if ( false === SH_CD_IS_PREMIUM ) : ?>
+				<?php if ( false === sh_cd_is_premium() ) : ?>
 					alert( '<?php echo __( "Please upgrade to bulk import shortcodes via CSV.", SH_CD_SLUG ); ?>' );
 					return;
 				<?php else: ?>

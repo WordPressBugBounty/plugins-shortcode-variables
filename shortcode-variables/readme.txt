@@ -3,7 +3,7 @@ Contributors: aliakro
 Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
 Tested up to: 6.8
-Stable tag: 4.2.4
+Stable tag: 5.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -32,13 +32,14 @@ to
 * **[Custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html)** – Create up to 10 custom shortcodes that can be embedded throughout your website.
 * **[Parameters](https://snippet-shortcodes.yeken.uk/shortcodes-own.html)** – Enhance your shortcodes by passing parameters into them e.g. [ sv slug="logo" color="blue" ]
 * **[Ready made shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-free.html)**  – A collection of out-of-the-box shortcodes for displaying common WordPress fields such as site title, username, admin email, etc.
+* **HTML editor** – a HTML editor for editing your [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
 
 **Premium Features**
 
 * **No limits** – create unlimited [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
 * **Inline editor** – Ability to edit [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) quickly using the inline editor.
 * **Duplicator** – Ability to duplicate [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) with one button click.
-* **Enable /Disable** – Ability to enable or disable [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
+* **Enable/Disable** – Ability to enable or disable [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
 * **Multi-site** – use [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) throughout your entire multi-site, not just limited to the one child site. 
 * **[CSV import](https://snippet-shortcodes.yeken.uk/csv-import.html)** – Bulk import your custom shortcodes.
 * **[WooCommerce fields](https://snippet-shortcodes.yeken.uk/shortcodes/sc-woocommerce.html)** –  A ready-made shortcode to display WooCommerce fields.
@@ -55,6 +56,8 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 
 == Useful links ==
 
+* [Snippet Shortcodes - Premium](https://snippetshortcodes.yeken.uk/) – main website for the Premium plugin.
+* [Snippet Shortcodes - Core](https://wordpress.org/plugins/shortcode-variables/) – WordPress.org page for the core plugin.
 * [Technical Documentation](https://snippet-shortcodes.yeken.uk/) – Installation and detailed documentation on how to use the plugin.
 * [Trial license](https://shop.yeken.uk/get-a-trial-license/) – Get a trial license to try out all the features.
 * [Upgrade](https://shop.yeken.uk/product/shortcode-variables/) – purchase a license to receive all of the features.
@@ -71,9 +74,28 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 
 == Upgrade Notice ==
 
-4.1 -[sv slug="sc-db-value-by-id"], new Premium shortcode for fetching a value from a MySQL table.
+5.0 - Premium features have been moved to a separate plugin (in accordance with WordPress rules). Please [download and activate Snippet Shortcodes – Premium](https://snippetshortcodes.yeken.uk/download/) 
 
 == Changelog ==
+
+= 5.0 =
+
+* New feature: A new HTML Editor when adding/editing your own shortcodes.
+* Change: Premium features have been moved to a separate plugin (in accordance with WordPress rules). Please [download and activate Snippet Shortcodes – Premium](https://snippetshortcodes.yeken.uk/download/) 
+* Change: Simplified slugs for premade shortcodes by dropping the prefix "sc-" e.g. "sc-php-get-value" is now "php-get-value".
+* Improvement: Added "Copy to clipboard" button to the shortcode list page.
+* Improvement: Added new plugin icon to WP Admin Menu and WP Editor.
+* Improvement: Added tooltips to the admin interfaces (these can be disabled in settings).
+* Improvement: Plugin JS, CSS and other assets are only loaded on Shortcode Snippet admin pages (rather than any admin page).
+* Improvement: Updated Fontawesome library and moved from CDN to self hosted (e.g. dependencies are now included in the plugin).
+* Improvement: Various UI tweaks.
+* Improvement: Added various hooks.
+* Bug fix: Fixed an issue where button "Add" button was not resetting correctly after a failed attempt to add a shortcode.
+* Bug fix: Refreshing the shortcode list after saving a shortcode won't cause an error message to be displayed. 
+
+= 4.2.5 =
+
+* Bug fix: In some instances, slug couldn't be specified when not a Premium user.
 
 = 4.2.4 =
 

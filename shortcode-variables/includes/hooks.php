@@ -9,7 +9,7 @@ function sh_cd_build_admin_menu() {
 
 	$allowed_viewer = sh_cd_permission_role();
 
-	add_menu_page( SH_CD_PLUGIN_NAME, SH_CD_PLUGIN_NAME, 'manage_options', 'sh-cd-shortcode-variables-main-menu', 'sh_cd_pages_your_shortcodes', 'dashicons-editor-kitchensink' );
+	add_menu_page( SH_CD_PLUGIN_NAME, SH_CD_PLUGIN_NAME, 'manage_options', 'sh-cd-shortcode-variables-main-menu', 'sh_cd_pages_your_shortcodes', 'dashicons-snippet-shortcodes' );
 
 	// Hide duplicated sub menu (wee hack!)
 	add_submenu_page( 'sh-cd-shortcode-variables-main-menu', '', '', 'manage_options', 'sh-cd-shortcode-variables-main-menu', 'sh_cd_pages_your_shortcodes');
@@ -20,9 +20,12 @@ function sh_cd_build_admin_menu() {
 
 	add_submenu_page( 'sh-cd-shortcode-variables-main-menu', __( 'Import shortcodes', SH_CD_SLUG ),  __( 'Import shortcodes', SH_CD_SLUG ), 'manage_options', 'sh-cd-import', 'sh_cd_admin_page_import' );
 
-	$menu_text = ( true === SH_CD_IS_PREMIUM ) ? __( 'Your License', SH_CD_SLUG ) : __( 'Upgrade to Premium', SH_CD_SLUG );
-
-	add_submenu_page( 'sh-cd-shortcode-variables-main-menu', $menu_text,  $menu_text, 'manage_options', 'sh-cd-shortcode-variables-license', 'sh_cd_advertise_pro');
+	if( false === sh_cd_is_premium_plugin_activated() ) {
+		add_submenu_page( 'sh-cd-shortcode-variables-main-menu', '<i class="fa-solid fa-star"></i> ' . __( 'Upgrade to Premium', SH_CD_SLUG ),  '<i class="fa-solid fa-star"></i> ' . __( 'Get Premium', SH_CD_SLUG ), 'manage_options', 'sh-cd-shortcode-variables-upgrade', 'sh_cd_page_upgrade');
+	}
+	
+	do_action( 'sh-cd-admin-menu-upgrade' );
+	
 	add_submenu_page( 'sh-cd-shortcode-variables-main-menu', __( 'Settings', SH_CD_SLUG ),  __( 'Settings', SH_CD_SLUG ), 'manage_options', 'sh-cd-settings', 'sh_cd_settings_page_generic' );
 	add_submenu_page( 'sh-cd-shortcode-variables-main-menu', __( 'Help', SH_CD_SLUG ),  __( 'Help', SH_CD_SLUG ), 'manage_options', 'sh-cd-help', 'sh_cd_help_page' );
 }
@@ -32,28 +35,80 @@ add_action( 'admin_menu', 'sh_cd_build_admin_menu' );
  * Enqueue relevant CSS / JS
  */
 function sh_cd_enqueue_scripts() {
-	wp_enqueue_style( 'sh-cd', plugins_url( '../assets/css/sh-cd.css', __FILE__ ), [], SH_CD_PLUGIN_VERSION ) ;
-	wp_enqueue_style('fontawesome', 'https://use.fontawesome.com/releases/v5.7.2/css/all.css', [], SH_CD_PLUGIN_VERSION);
-	wp_enqueue_script( 'sh-cd', plugins_url( '../assets/js/sh-cd.js', __FILE__ ), [ 'jquery' ], SH_CD_PLUGIN_VERSION, true );
 
+	wp_enqueue_style( 'sh-cd-dashicon', plugins_url( '../assets/css/sh-cd-dashicon.css', __FILE__ ), [], SH_CD_PLUGIN_VERSION );
+
+	// Allow marketing.js on any page so admin's can dismiss admin notices anywhere
+	wp_enqueue_script( 'sh-cd-marketing', plugins_url( '../assets/js/marketing.js', __FILE__ ), [ 'jquery' ], SH_CD_PLUGIN_VERSION, true );
+
+	if ( ! sh_cd_is_snippet_shortcodes_admin_page() ) {
+		return;
+	}
+
+	$main_js_dependencies = [ 'jquery', 'sh-cd-clipboard' ];
+
+	// Tooltips
+	if ( sh_cd_tooltips_is_enabled() ) {
+		wp_enqueue_script( 'sh-cd-tooltip', plugins_url( '../assets/zerbratooltips/zebra_tooltips.min.js', __FILE__ ), [ ], SH_CD_PLUGIN_VERSION );
+		wp_enqueue_style( 'sh-cd-tooltip', plugins_url( '../assets/zerbratooltips/zebra_tooltips.min.css', __FILE__ ), [], SH_CD_PLUGIN_VERSION ) ;
+
+		$main_js_dependencies[] = 'sh-cd-tooltip';
+	}
+
+	// CSS
+	wp_enqueue_style( 'sh-cd', plugins_url( '../assets/css/sh-cd.css', __FILE__ ), [ 'sh-cd-dashicon' ], SH_CD_PLUGIN_VERSION );
+	wp_enqueue_style( 'sh-cd-fontawesome', plugins_url( '../assets/fontawesome/css/fontawesome.min.css', __FILE__ ), [], SH_CD_PLUGIN_VERSION );
+	wp_enqueue_style( 'sh-cd-fontawesome-solid', plugins_url( '../assets/fontawesome/css/solid.min.css', __FILE__ ), [ 'sh-cd-fontawesome' ], SH_CD_PLUGIN_VERSION );
+	wp_enqueue_style( 'sh-cd-fontawesome-regular', plugins_url( '../assets/fontawesome/css/regular.min.css', __FILE__ ), [ 'sh-cd-fontawesome' ], SH_CD_PLUGIN_VERSION );
+	wp_enqueue_style( 'sh-cd-fontawesome-brands', plugins_url( '../assets/fontawesome/css/brands.min.css', __FILE__ ), [ 'sh-cd-fontawesome' ], SH_CD_PLUGIN_VERSION );
+
+	// JS
+	wp_enqueue_script( 'sh-cd-clipboard', plugins_url( '../assets/js/clipboard.min.js', __FILE__ ), [], SH_CD_PLUGIN_VERSION, true );
+	wp_enqueue_script( 'sh-cd', plugins_url( '../assets/js/sh-cd.js', __FILE__ ), $main_js_dependencies, SH_CD_PLUGIN_VERSION, true );
 	wp_localize_script( 'sh-cd', 'sh_cd', sh_cd_js_config() );
 
 }
 add_action( 'admin_enqueue_scripts', 'sh_cd_enqueue_scripts' );
 
 /**
+ * Determine if we are on a Snippet Shortcodes admin page
+ *
+ * @return bool
+ */
+function sh_cd_is_snippet_shortcodes_admin_page() {
+
+	if ( true === empty( $_GET['page' ] ) ) {
+		return false;
+	}
+
+	$known_admin_pages = apply_filters( 'sh-cd-admin-pages', [	'sh-cd-shortcode-variables-main-menu',
+																'sh-cd-shortcode-variables-your-shortcodes',
+																'sh-cd-shortcode-variables-sub-premade',
+																'sh-cd-import',
+																'sh-cd-shortcode-variables-upgrade',
+																'sh-cd-settings',
+																'sh-cd-help' ] );
+
+	return in_array( $_GET['page'], $known_admin_pages );																
+}
+
+/**
  * Config for JS
  * @return array
  */
 function sh_cd_js_config() {
-	return [
+	return [	'editor'                   	=> sh_cd_default_editor_get(),
+				'page'                 		=> false === empty( $_GET['page'] ) ? $_GET['page'] : '',
+				'action'                 	=> false === empty( $_GET['action'] ) ? $_GET['action'] : '',
 				'security'                  => wp_create_nonce( 'sh-cd-security' ),
-				'premium'                   => SH_CD_IS_PREMIUM,
+				'premium'                   => sh_cd_is_premium(),
 				'text-delete-confirm'       => __( 'Are you sure you wish to delete this shortcode?', SH_CD_SLUG ),
 				'text-add'                  => __( 'Add', SH_CD_SLUG ),
 				'text-save'                 => __( 'Save', SH_CD_SLUG ),
 				'text-saved'                => __( 'Saved!', SH_CD_SLUG ),
-				'text-error'                => __( 'Unfortunately something went wrong!', SH_CD_SLUG )
+				'text-editor-change'        => __( 'Changing the editor will cause any unsaved changes to be lost. Please ensure you have saved your shortcode before proceeding.', SH_CD_SLUG ),
+				'text-error'                => __( 'Unfortunately something went wrong!', SH_CD_SLUG ),
+				'tooltips-enabled'          => sh_cd_tooltips_is_enabled() ? 'yes' : 'no',
 	];
 }
 
@@ -68,8 +123,6 @@ function sh_cd_upgrade() {
 
 		sh_cd_create_database_table_multisite();
 
-		sh_cd_cron_licence_check();
-
 		do_action( 'sh-cd-upgrade' );
 	}
 }
@@ -81,7 +134,7 @@ add_action('admin_init', 'sh_cd_upgrade');
  **/
 function sh_cd_ajax_toggle_status() {
 
-	if ( false === SH_CD_IS_PREMIUM ) {
+	if ( false === sh_cd_is_premium() ) {
 		wp_send_json( 'not-premium' );
 	}
 
@@ -129,7 +182,7 @@ Ajax handler for toggling disable status of a shortcode
  **/
 function sh_cd_ajax_toggle_multisite() {
 
-	if ( false === SH_CD_IS_PREMIUM ) {
+	if ( false === sh_cd_is_premium() ) {
 		wp_send_json( 'not-premium' );
 	}
 
@@ -155,7 +208,7 @@ Ajax handler for saving shortcode inline
  **/
 function sh_cd_ajax_update_shortcode() {
 
-	if ( false === SH_CD_IS_PREMIUM ) {
+	if ( false === sh_cd_is_premium() ) {
 		wp_send_json( 'not-premium' );
 	}
 
@@ -182,7 +235,7 @@ Ajax handler for adding shortcode inline
  **/
 function sh_cd_ajax_add_shortcode() {
 
-	if ( false === SH_CD_IS_PREMIUM ) {
+	if ( false === sh_cd_is_premium() ) {
 		wp_send_json( 'not-premium' );
 	}
 

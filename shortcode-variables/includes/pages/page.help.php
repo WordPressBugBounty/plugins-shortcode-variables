@@ -37,7 +37,7 @@ function sh_cd_help_page() {
                         </h3>
 						<div style="padding: 0px 15px 0px 15px">
 							<p><?php echo __( 'You can find detailed documentation for this plugin at our site:', SH_CD_SLUG ); ?></p>
-							<p>
+							<p><a href="https://snippetshortcodes.yeken.uk/" rel="noopener noreferrer"  class="button"  target="_blank"><?php echo __( 'Main website', SH_CD_SLUG ); ?></a>
 								<a href="https://snippet-shortcodes.yeken.uk/" rel="noopener noreferrer"  class="button"  target="_blank"><?php echo __( 'View Documentation', SH_CD_SLUG ); ?></a>
 								<a href="https://github.com/alicolville/shortcode-variables/issues"  class="button"  rel="noopener noreferrer" target="_blank"><?php echo __( 'Release Notes', SH_CD_SLUG ); ?></a>
 							</p>
@@ -79,7 +79,7 @@ function sh_cd_help_page() {
 function sh_cd_custom_notification_html() {
 	?>
 
-	<p><img src="<?php echo plugins_url( 'assets/images/yeken-logo.png', __FILE__ ); ?>" width="100" height="100" style="margin-right:20px" align="left" /><?php echo __( 'If require plugin modifications to Meal Tracker, or need a new plugin built, or perhaps you need a developer to help you with your website then please don\'t hesitate get in touch!', SH_CD_SLUG ); ?></p>
+	<p><img src="<?php echo plugins_url( 'assets/images/yeken-logo.png', __FILE__ ); ?>" width="100" height="100" style="margin-right:20px" align="left" /><?php echo __( 'If you need changes to Snippet Shortcodes, a custom plugin built, or help from a developer for your website, feel free to get in touch!', SH_CD_SLUG ); ?></p>
 	<p><strong><?php echo __( 'We provide fixed priced quotes.', SH_CD_SLUG ); ?></strong></p>
 	<p><a href="https://www.yeken.uk" rel="noopener noreferrer" target="_blank">YeKen.uk</a> /
 		<a href="https://profiles.wordpress.org/aliakro" rel="noopener noreferrer" target="_blank">WordPress Profile</a> /

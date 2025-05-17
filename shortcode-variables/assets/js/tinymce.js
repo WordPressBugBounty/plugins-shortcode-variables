@@ -3,7 +3,8 @@
     tinymce.PluginManager.add( 'sh_cd_tinymce_button', function( editor, url ) {
 
             editor.addButton( 'sh_cd_tinymce_button', {
-            text: sh_cd_tinymce[ 'button-text' ],
+            title: sh_cd_tinymce[ 'button-text' ],
+            image: sh_cd_tinymce[ 'button-image' ],
             type: 'menubutton',
             icon: false,
                 menu: [

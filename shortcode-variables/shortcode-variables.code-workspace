@@ -1,9 +1,15 @@
 {
 	"folders": [
 		{
+			"name": "shortcode-variables",
 			"path": "."
 		},
 		{
+			"name": "snippet-shortcodes-premium",
+			"path": "../snippet-shortcodes-premium"
+		},
+		{
+			"name": "html",
 			"path": "../../.."
 		}
 	],

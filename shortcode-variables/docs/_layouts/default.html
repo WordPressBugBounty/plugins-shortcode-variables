@@ -29,11 +29,11 @@
       text-align: left;
         height: 16px;
     }
-      .menu ul {
-          margin-bottom: 0px;
-      }
+    .menu ul {
+        margin-bottom: 0px;
+    }
     blockquote {
-      color: green;
+      color: #e72c59;
     }
     h1 {
       font-size: 23px;
@@ -46,6 +46,9 @@
     }
     .product-logo {
       margin-right: 10px;
+    }
+    .yk-ss-promo {
+      font-weight: bold;
     }
     a:hover {
       font-weight: normal !important;
@@ -118,9 +121,9 @@
       <input type="checkbox" id="navcheck" name="navcheck" />
     <ul class="menu">
         <li><a href="{{ site.baseurl }}/">Home</a></li>
-        <li><a href="https://shop.yeken.uk/get-a-trial-license/">Get a trial</a></li>
-        <li><a href="https://shop.yeken.uk/product/shortcode-variables/">Upgrade</a></li>
-        <li><a href="https://github.com/alicolville/shortcode-variables/releases">Release notes</a></li>
+        <li><a href="{{ site.baseurl }}/getting-started.html">Getting started</a></li>
+        <li class="yk-ss-promo"><a href="https://snippetshortcodes.yeken.uk/download/" target="_blank" rel="noopener">Get Premium Plugin</a></li>
+        <li class="yk-ss-promo"><a href="https://shop.yeken.uk/product/shortcode-variables/" target="_blank" rel="noopener">Purchase a license</a></li>
         <li>
             <a href="{{ site.baseurl }}/features.html">Features</a>
             <ul>
@@ -130,7 +133,8 @@
               <li><a href="{{ site.baseurl }}/csv-import.html">Import via CSV</a></li>
             </ul>
         </li>
-        <li><a href="https://profiles.wordpress.org/aliakro/#content-plugins">Other Plugins</a></li>
+        <li><a href="https://shop.yeken.uk/get-a-trial-license/">Get a trial license</a></li>
+        <li><a href="https://github.com/alicolville/shortcode-variables/releases">Release notes</a></li>
         <li><a href="{{ site.baseurl }}/contact.html">Contact</a></li>
     </ul>
 

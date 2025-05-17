@@ -1,6 +1,6 @@
 theme: jekyll-theme-minimal
 title: Snippet Shortcodes
-description: Documentation and tips for setting up Snippet Shortcodes on your WordPress site.
+description: Technical documentation for the WordPress plugin Snippet Shortcodes.
 baseurl: /
 logo: assets/images/product-logo.png
 kramdown:

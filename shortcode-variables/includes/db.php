@@ -17,6 +17,7 @@ function sh_cd_create_database_table() {
 	  id mediumint(9) NOT NULL AUTO_INCREMENT,
 	  slug varchar(100) NOT NULL,
 	  previous_slug varchar(100) NOT NULL,
+	  editor varchar(10) NULL,
 	  data text,
 	  disabled bit default 0,
 	  multisite bit default 0,
@@ -99,7 +100,7 @@ function sh_cd_db_shortcodes_by_id( $id ) {
 
 	global $wpdb;
 
-	$sql = $wpdb->prepare('SELECT id, slug, previous_slug, data, disabled, multisite FROM ' . $wpdb->prefix . SH_CD_TABLE . ' where id = %d', $id);
+	$sql = $wpdb->prepare('SELECT id, slug, previous_slug, data, disabled, multisite, editor FROM ' . $wpdb->prefix . SH_CD_TABLE . ' where id = %d', $id);
 
 	return $wpdb->get_row( $sql, ARRAY_A );
 }
@@ -172,6 +173,7 @@ function sh_cd_db_shortcodes_save( $shortcode, $return_shortcode = false ) {
 	$shortcode = wp_parse_args( $shortcode, [   'id'            => NULL,
 												'slug'          => NULL,
 												'previous_slug' => NULL,
+												'editor' 		=> NULL,
 												'data'          => NULL,
 												'disabled'      => 0,
 												'multisite'     => 0
@@ -204,6 +206,10 @@ function sh_cd_db_shortcodes_save( $shortcode, $return_shortcode = false ) {
 			[ '%d' ]
 		);
 
+		if ( false !== $result ) {
+			do_action( 'sh-cd-shortcode-updated', $shortcode );
+		}
+
 		sh_cd_cache_delete_by_slug_or_key( $shortcode['id'] );
 		sh_cd_cache_delete_by_slug_or_key( $shortcode['previous_slug'] );
 
@@ -222,6 +228,10 @@ function sh_cd_db_shortcodes_save( $shortcode, $return_shortcode = false ) {
 			$shortcode,
 			$formats
 		);
+
+		if ( false !== $result ) {
+			do_action( 'sh-cd-shortcode-added', $shortcode );
+		}
 
 		// It's an insert, so there should be no cache... however, just a wee sanity check in case
 		// a shortcode with the same slug previously exists.
@@ -448,8 +458,13 @@ function sh_cd_db_shortcodes_delete( $id ) {
 	// Clear cached version
 	sh_cd_cache_delete_by_slug_or_key( $id );
 
+	$slug 	= sh_cd_db_shortcodes_get_slug_by_id( $id );
 	$result = $wpdb->delete( $wpdb->prefix . SH_CD_TABLE, [ 'id' => $id ], [ '%d' ] );
 
+	if ( false !== $result ) {
+		do_action( 'sh-cd-shortcode-updated', $id, $slug );
+	}
+	
 	return ( false !== $result );
 }
 
@@ -469,7 +484,8 @@ function sh_cd_db_get_formats( $data ) {
 		'data' => '%s',
 		'disabled' => '%d',
 		'multisite' => '%d',
-		'site_id' => '%d'
+		'site_id' => '%d',
+		'editor' => '%s'
 	];
 
 	$formats = [];

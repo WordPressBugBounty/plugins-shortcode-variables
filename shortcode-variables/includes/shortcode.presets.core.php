@@ -8,6 +8,8 @@ defined('ABSPATH') or die("Jog on!");
  */
 function sh_cd_is_preset( $slug ) {
 
+	$slug = sh_cd_prep_slug( $slug );
+
 	// Free preset?
 	if ( true === array_key_exists( $slug, sh_cd_shortcode_presets_free_list() ) ) {
 		return 'free';
@@ -19,6 +21,16 @@ function sh_cd_is_preset( $slug ) {
 	}
 
 	return false;
+}
+
+/**
+ * Remove old references to the "sc-" prefix
+ */
+function sh_cd_prep_slug( $slug ) {
+
+	$slug = str_replace( 'sc-', '', $slug );
+
+	return $slug;
 }
 
 /**
@@ -52,7 +64,7 @@ function sh_cd_shortcode_presets_render( $args ) {
 	}
 
 	// Is this a premium shortcode but no license?
-	if ( 'premium' === $preset['sh-cd-type'] && false === SH_CD_IS_PREMIUM ) {
+	if ( 'premium' === $preset['sh-cd-type'] && false === sh_cd_is_premium() ) {
 		return sprintf( '<p><strong>%s</strong> %s. <a href="%s">%s</a>.<p>',
 						__( 'Ooops!', SH_CD_SLUG ),
 						__('Unfortunately this is a Premium shortcode. You need to upgrade "Snippet Shortcodes" to use it', SH_CD_SLUG ),
@@ -91,6 +103,8 @@ function sh_cd_shortcode_presets_render( $args ) {
  */
 function sh_cd_shortcode_presets_fetch( $slug ) {
 
+	$slug = sh_cd_prep_slug( $slug );
+
 	$free_presets = sh_cd_shortcode_presets_free_list();
 
 	// Free preset?
@@ -116,65 +130,3 @@ function sh_cd_shortcode_presets_fetch( $slug ) {
 	return false;
 
 }
-
-/**
- * Render text file for promo
- */
-function sh_cd_shortcode_render_text() {
-
-	$output = '**Premium Shortcodes**' . PHP_EOL;
-
-	$shortcodes = sh_cd_shortcode_presets_premium_list();
-
-	foreach ( $shortcodes as $key => $data ) {
-		$output .= sprintf('- %s - %s' . PHP_EOL , $key, $data['description'] );
-	}
-
-	$output .= '**Free Shortcodes**' . PHP_EOL;
-
-	$shortcodes = sh_cd_shortcode_presets_free_list();
-
-	foreach ( $shortcodes as $key => $data ) {
-		$output .= sprintf('- %s - %s' . PHP_EOL , $key, $data['description'] );
-	}
-
-	return $output;
-
-}
-add_shortcode( 'sv-promo', 'sh_cd_shortcode_render_text' );
-
-/**
- * Shortcode to render free shortcodes (more for promo purposes)
- *
- * @return string
- */
-function sh_cd_shortcode_render_table_free() {
-
-	return sh_cd_display_premade_shortcodes( 'free' );
-
-}
-add_shortcode( 'sv-promo-free', 'sh_cd_shortcode_render_table_free');
-
-/**
- * Shortcode to render premium shortcodes (more for promo purposes)
- *
- * @return string
- */
-function sh_cd_shortcode_render_table_premium() {
-
-	return sh_cd_display_premade_shortcodes( 'premium' );
-
-}
-add_shortcode( 'sv-promo-premium', 'sh_cd_shortcode_render_table_premium');
-
-/**
- * Shortcode to render all shortcodes (more for promo purposes)
- *
- * @return string
- */
-function sh_cd_shortcode_render_table_all() {
-
-	return sh_cd_display_premade_shortcodes();
-
-}
-add_shortcode( 'sv-promo-all', 'sh_cd_shortcode_render_table_all');
