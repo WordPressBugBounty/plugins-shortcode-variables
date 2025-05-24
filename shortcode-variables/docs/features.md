@@ -11,6 +11,8 @@
 
 Besides the features listed under core, the Premium version benefits from the following:  
 
+* **Automatically insert into your site's header or footer** – auto insert your  [custom shortcode's](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) content into either your site's header and/or footer.
+* **Limit to certain device types** – specify whether your [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) should only be visible on Mobile, Tablet, Desktop or all three.
 * **No limits** – create unlimited [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
 * **Inline editor** – Ability to quickly edit [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) quickly using the inline editor.
 * **Duplicator** – Ability to duplicate [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) with one button click.

@@ -50,8 +50,14 @@ function sh_cd_prompt_to_upgrade_premium() {
 	if ( false === sh_cd_is_premium_plugin_activated() ) {
 		return;
 	}
+
+	$latest_version = sh_cd_get_latest_premium_version();
+
+	if ( true === empty( $latest_version ) ) {
+		return;
+	}
 	
-	if ( SH_CD_PREMIUM_PLUGIN_LATEST_VERSION === YK_SS_PLUGIN_VERSION ) {
+	if ( $latest_version === YK_SS_PLUGIN_VERSION ) {
 		return;
 	}
 
@@ -62,11 +68,11 @@ function sh_cd_prompt_to_upgrade_premium() {
 
 	$version_dismissed = sh_cd_marketing_prompt_been_dismissed( '_yeken_shortcode_variables_upgrade_premium_has_been_dismissed' );
 
-	if ( false !== empty( $version_dimissed ) && $version_dismissed === SH_CD_PREMIUM_PLUGIN_LATEST_VERSION ) {
+	if ( false !== empty( $version_dimissed ) && $version_dismissed === $latest_version ) {
 		return;
 	}
 
-	$dismiss_url = add_query_arg( [ 'dismiss-premium-upgrade' => SH_CD_PREMIUM_PLUGIN_LATEST_VERSION ], sh_cd_get_current_url() );
+	$dismiss_url = add_query_arg( [ 'dismiss-premium-upgrade' => $latest_version ], sh_cd_get_current_url() );
 
 	printf('<div class="notice notice-warning">
 				<p><strong>%1$s</strong>: %2$s</p>
@@ -81,7 +87,7 @@ function sh_cd_prompt_to_upgrade_premium() {
 			esc_url( admin_url('plugins.php') ),
 			$dismiss_url,
 			__( 'Dismiss', SH_CD_SLUG ),
-			__( 'Update to ', SH_CD_SLUG ) . SH_CD_PREMIUM_PLUGIN_LATEST_VERSION,
+			__( 'Update both plugins via plugin screen', SH_CD_SLUG ),
 			sh_cd_premium_shortcode_download( true ),
     );
 }
@@ -118,6 +124,8 @@ function sh_cd_license_upgrade_link() {
 function sh_cd_premium_features_list() {
 
 	return [
+			[ 'title' => 'Insert into header or footer', 'description' => 'Automaically insert your custom shortcode’s content into either your site’s header and/or footer.', 'read-more-url' => '' ],
+			[ 'title' => 'Limit to certain device types', 'description' => 'Specify whether your custom shortcode should only be visible on Mobile, Tablet, Desktop or all three.', 'read-more-url' => '' ],
 			[ 'title' => 'No limits', 'description' => 'Create unlimited custom shortcodes.', 'read-more-url' => '' ],
 			[ 'title' => 'Inline editor', 'description' => 'Ability to edit custom shortcodes without having to use a full editor.', 'read-more-url' => '' ],
 			[ 'title' => 'Duplicator', 'description' => 'Ability to duplicate custom shortcodes.', 'read-more-url' => '' ],
@@ -323,11 +331,41 @@ function sh_cd_display_premade_shortcodes( $display = 'all' ) {
 }
 
 /**
+ * Fetch the latest version of the premium plugin
+ */
+function sh_cd_get_latest_premium_version() {
+	
+	if ( $cache = get_transient( '_yeken_shortcode_variables_latest_premium_version' ) ) {
+		return $cache;
+	}
+
+	$response 	= wp_remote_get( SH_CD_YEKEN_PREMIUM_RELEASE_MANIFEST );
+	$version 	= NULL;
+
+	// All ok?
+	if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
+
+		$body = wp_remote_retrieve_body( $response );
+
+		if ( false === empty( $body ) ) {
+
+			$body = json_decode( $body, true );
+
+			$version = ( false === empty( $body[ 'version' ] ) ) ? $body[ 'version' ] : NULL;
+			
+			set_transient( '_yeken_shortcode_variables_latest_premium_version', $version, DAY_IN_SECONDS );
+		}
+	}
+
+	return $version;
+}
+
+/**
  * Display admin notice for notification from yeken.uk
  */
 function sh_cd_get_marketing_message() {
 	
-	if ( $cache = get_transient( '_yeken_shortcode_variables_update1' ) ) {
+	if ( $cache = get_transient( '_yeken_shortcode_variables_update' ) ) {
 		return $cache;
 	}
 
@@ -339,10 +377,9 @@ function sh_cd_get_marketing_message() {
 		$body = wp_remote_retrieve_body( $response );
 
 		if ( false === empty( $body ) ) {
-
 			$body = json_decode( $body, true );
 			
-			set_transient( '_yeken_shortcode_variables_update', $body, HOUR_IN_SECONDS );
+			set_transient( '_yeken_shortcode_variables_update', $body, DAY_IN_SECONDS );
 
 			return $body;
 		}
@@ -436,7 +473,7 @@ add_action( 'admin_notices', 'sh_cd_updates_admin_notice' );
  /**
   * Text to display on upgrade and license page
   */
- function sh_cd_marketing_upgrade_page_text() {
+function sh_cd_marketing_upgrade_page_text() {
 ?>
 	<h4 class="sh-cd-promo"><i class="fa-regular fa-star"></i> <?php echo __( 'Unlock these extra features when you upgrade:', SH_CD_SLUG ); ?></h4>
 	<?php echo sh_cd_display_premium(); ?>
@@ -444,4 +481,25 @@ add_action( 'admin_notices', 'sh_cd_updates_admin_notice' );
 	<p><?php echo __( 'Upgrade to the Premium version of Snippet Shortcodes to unlock these additional shortcodes.', SH_CD_SLUG ); ?>:</p>
 	<?php echo sh_cd_display_premade_shortcodes( 'premium' );  ?>
 <?php
- }
+}
+
+/**
+ * Marketing prompt to upgrade on Edit page to get additional shortcode options
+ *
+ * @return void
+ */
+function sh_cd_marketing_page_edit_additional_options() {
+
+	$title =  __( 'Unlock these additional settings by upgrading to Premium', SH_CD_SLUG ) ;
+
+	$content = sprintf('<ul><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li></ul>',
+		__( '<span>Insert into Header / Footer</span> - specify whether to automatically insert the shortcode content into the WP Header or Footer.', SH_CD_SLUG ),
+		__( '<span>Limit to mobile or desktop</span> - specify whether a shortcode should only appear on mobile or desktop devices.', SH_CD_SLUG ),
+		__( '<span>Global shortcodes</span> - specify whether a shortcode should be available across all sites in your multisite network.', SH_CD_SLUG ),
+		__( '<span>Disable shortcodes</span> - have the ability to disable shortcodes so content will not appear at the location of the shortcode in the public facing site.', SH_CD_SLUG ),
+		__( '<span>Edit Slug</span> - have the ability to change the slug of an existing shortcode.', SH_CD_SLUG )
+	);
+
+	sh_cd_display_pro_upgrade_notice( $title, $content, 'sh-cd-page-edit-marketing-prompt' );
+}
+

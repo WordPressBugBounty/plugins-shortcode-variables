@@ -5,7 +5,7 @@ defined('ABSPATH') or die("Jog on!");
 /**
  * Plugin Name: Snippet Shortcodes
  * Description: Create a library of custom shortcodes and reusable content, and seamlessly insert them into your posts and pages. 
- * Version: 5.0
+ * Version: 5.1
  * Requires at least:   6.0
  * Tested up to: 		6.8
  * Requires PHP:        7.4
@@ -33,8 +33,7 @@ defined('ABSPATH') or die("Jog on!");
 */
 
 define( 'SH_CD_ABSPATH', plugin_dir_path( __FILE__ ) );
-define( 'SH_CD_PLUGIN_VERSION', '5.0' );
-define( 'SH_CD_PREMIUM_PLUGIN_LATEST_VERSION', '1.0.4' ); // Used to trigger "there is a newer version" message
+define( 'SH_CD_PLUGIN_VERSION', '5.1' );
 define( 'SH_CD_PLUGIN_NAME', 'Snippet Shortcodes' );
 define( 'SH_CD_TABLE', 'SH_CD_SHORTCODES' );
 define( 'SH_CD_TABLE_MULTISITE', 'SH_CD_SHORTCODES_MULTISITE' );
@@ -46,6 +45,7 @@ define( 'SH_CD_UPGRADE_LINK', 'https://shop.yeken.uk/product/shortcode-variables
 //       Do not remove or rename the constant.
 define( 'SH_CD_GET_PREMIUM_LINK', 'https://snippetshortcodes.yeken.uk/download/' );    
 define( 'SH_CD_YEKEN_UPDATES_URL', 'https://yeken.uk/downloads/_updates/shortcode-variables.json' );
+define( 'SH_CD_YEKEN_PREMIUM_RELEASE_MANIFEST', 'https://snippetshortcodes.yeken.uk/wp-content/plugins/snippet-shortcodes-premium/release.json' );
 
 add_action( 'plugins_loaded', function() {
 
@@ -66,5 +66,4 @@ add_action( 'plugins_loaded', function() {
     include_once SH_CD_ABSPATH . 'includes/pages/page.help.php';
     include_once SH_CD_ABSPATH . 'includes/pages/page.import.php';
     include_once SH_CD_ABSPATH . 'includes/tinymce.php';
-
 });

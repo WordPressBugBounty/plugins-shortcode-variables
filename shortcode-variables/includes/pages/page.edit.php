@@ -21,6 +21,8 @@ function sh_cd_pages_your_shortcodes_edit( $action = 'add', $save_result = NULL 
 		            sh_cd_db_shortcodes_by_id( (int) $_GET['id'] ) :
 		                sh_cd_get_values_from_post( [ 'id', 'slug', 'previous_slug', 'data', 'disabled', 'multisite', 'editor' ] );
 
+    $shortcode = apply_filters( 'sh-cd-shortcode-new', $shortcode, $action );
+               
 	$shortcode['data']  = stripslashes( $shortcode['data'] );
 
     $current_editor = ( false === empty( $_GET[ 'editor' ] ) ) ? $_GET[ 'editor' ] : $shortcode[ 'editor' ];
@@ -37,15 +39,7 @@ function sh_cd_pages_your_shortcodes_edit( $action = 'add', $save_result = NULL 
 			<div id="post-body" class="metabox-holder columns-3">
 				<div id="post-body-content">
 					<div class="meta-box-sortables ui-sortable">
-                        <?php if ( false === sh_cd_is_premium() ) : ?>
-                                <p>
-                                    <i class="fa-regular fa-star"></i>
-                                    <a href="<?php echo sh_cd_license_upgrade_link(); ?>">
-                                        <?php echo __( 'Multi site support and editing slugs are only available for Premium users. Upgrade now.', SH_CD_SLUG ); ?>
-                                    </a>
-                                </p>
-                            <?php endif; ?>
-                        <div class="postbox sh-cd-postbox-edit-slug">
+                       <div class="postbox sh-cd-postbox-edit-slug">
 							<h3 class="postbox-header">
                                 <span>
                                     <?php echo __( 'Slug', SH_CD_SLUG ); ?>
@@ -63,17 +57,19 @@ function sh_cd_pages_your_shortcodes_edit( $action = 'add', $save_result = NULL 
 									);
 
                                 else:
-                                
+                           
                                 ?>
 
                                 <input type="hidden" id="id" name="id" value="<?php echo esc_attr( $shortcode['id'] ); ?>" />
                                 <?php wp_nonce_field( 'save-shortcode' ); ?>
                                 
                                 <div class="sh-cd-row">
-                                    <input type="text" required class="regular-text sh-cd-slug-validation" size="100" id="slug" name="slug"
+                                    <?php if ( true === sh_cd_is_premium() || 'add' === $action ) : ?>
+                                        <input type="text" required class="regular-text sh-cd-slug-validation" size="100" id="slug" name="slug"
                                             placeholder="Enter a name for your shortcode" title="Only letters, numbers, dashes and underscores are allowed."
-                                                value="<?php echo esc_attr( $shortcode['slug'] )?>"  <?php if ( false === sh_cd_is_premium() && 'edit' === $action ) { echo 'disabled="disabled"'; } ?> />
-                            
+                                                value="<?php echo esc_attr( $shortcode['slug'] )?>" />
+                                    <?php endif; ?>    
+                                   
                                     <?php $previous_slug = ( false === empty( $shortcode['previous_slug'] ) ) ? $shortcode['previous_slug'] : $shortcode['slug']; ?>
                                     <input type="hidden" id="previous_slug" name="previous_slug" value="<?php echo esc_attr( $previous_slug )?>" />
 
@@ -83,7 +79,7 @@ function sh_cd_pages_your_shortcodes_edit( $action = 'add', $save_result = NULL 
                                         ?>
                                         <?php echo __( 'Shortcode:', SH_CD_SLUG ); ?><span id="sh-cd-test-shortcode-slug">[<?php echo SH_CD_SHORTCODE; ?> slug="<span id="sh-cd-shortcode-slug-preview"><?php echo esc_html( $default_slug ); ?></span>"]</span>
                                         <i class="far fa-copy sh-cd-copy-trigger <?php if ( 'add' === $action ): ?>sh-cd-hide<?php endif; ?>" data-clipboard-text="[<?php echo SH_CD_SHORTCODE; ?> slug=&quot;<?php echo esc_html( $default_slug ); ?>&quot;]"></i>
-                                    </p>            
+                                    </p>      
                                 </div>
                             </div>
                         </div>
@@ -111,48 +107,35 @@ function sh_cd_pages_your_shortcodes_edit( $action = 'add', $save_result = NULL 
                                     
                                 ?>    
                                 <input type="hidden" id="editor" name="editor" value="<?php echo esc_attr( $current_editor ); ?>" />
-                                <table class="sh-cd-shortcode-options" width="100%">
-                                    <tr>
-                                        <th width="100">
-                                            <?php echo __( 'Disable?', SH_CD_SLUG ); ?>
-                                            <?php echo sh_cd_display_info_tooltip( 'If disabled, no content will appear at the location of the shortcode in the public facing site.'); ?>
-                                            <?php echo $premium_icon; ?> 
-                                        </th>
-                                        <td width="*">
-                                            <select id="disabled" name="disabled" <?php if ( false === sh_cd_is_premium() ) { echo 'disabled="disabled"'; } ?>>
-                                                <option value="0" <?php selected( $shortcode['disabled'], 0 ); ?>><?php echo __( 'No', SH_CD_SLUG ); ?></option>
-                                                <option value="1" <?php selected( $shortcode['disabled'], 1 ); ?>><?php echo __( 'Yes', SH_CD_SLUG ); ?></option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th><?php echo __( 'Global?', SH_CD_SLUG ); ?> 
-                                            <?php echo sh_cd_display_info_tooltip( "Enable this to make the shortcode available across all sites in your multisite network. Note: Global shortcodes override local ones with the same slug, and conflicts may arise if slugs aren't unique. Updates may take up to 30 seconds to apply."); ?> 
-                                            <?php echo $premium_icon; ?>    
-                                        </th>
-                                        <td>
-                                            <select id="multisite" name="multisite" <?php if ( false === sh_cd_is_premium() ) { echo 'disabled="disabled"'; } ?>>
-                                                <option value="0" <?php selected( $shortcode['multisite'], 0 ); ?>><?php echo __( 'No', SH_CD_SLUG ); ?></option>
-                                                <option value="1" <?php selected( $shortcode['multisite'], 1 ); ?>><?php echo __( 'Yes', SH_CD_SLUG ); ?></option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </table>  
-                                <div class="sh-cd-button-row sh-cd-border-top">
-                                    <a class="comment-submit button" href="<?php echo sh_cd_link_your_shortcodes(); ?>"><?php echo __( 'Cancel', SH_CD_SLUG ); ?></a>
-                                    <input name="submit_button" type="submit" value="Save Shortcode" class="comment-submit button button-primary sh-cd-button">
-                                </div>
-                            
+                             </div>
+                        </div>    
+                        <div class="postbox sh-cd-postbox-edit-content">
+                            <h3 class="postbox-header">
+                                <span>
+                                    <?php echo __( 'Options', SH_CD_SLUG ); ?>
+                                </span>
+                            </h3>
+                            <div class="sh-cd-postbox-content">
+                                <?php 
+                                   if ( false === apply_filters( 'sh-cd-premium-plugin-likely-to-add-edit-options', false ) ) {
+                                        sh_cd_marketing_page_edit_additional_options();
+                                    } else {
+                                        do_action( 'sh-cd-page-edit', $shortcode ); // Allow Premium plugin to add additional fields
+                                    }        
+                                ?>    
+                            </div>
+                        </div>    
+                        <div class="sh-cd-button-row">
+                            <a class="comment-submit button" href="<?php echo sh_cd_link_your_shortcodes(); ?>"><?php echo __( 'Cancel', SH_CD_SLUG ); ?></a>
+                            <input name="submit_button" type="submit" value="Save Shortcode" class="comment-submit button button-primary sh-cd-button">
+                        </div>
                         <?php endif; ?>
-                    </div>
                 </div>
-                </div>
-			    </div>
-			    </div>
-			
+			</div>
+			</div>		
 		</div>
 	</div>
-    </form>
+</form>
 	<?php
 }
 

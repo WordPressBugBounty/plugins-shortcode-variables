@@ -182,7 +182,7 @@ Ajax handler for toggling disable status of a shortcode
  **/
 function sh_cd_ajax_toggle_multisite() {
 
-	if ( false === sh_cd_is_premium() ) {
+	if ( false === sh_cd_is_multisite_enabled() ) {
 		wp_send_json( 'not-premium' );
 	}
 

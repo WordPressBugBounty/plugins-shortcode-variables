@@ -3,7 +3,7 @@ Contributors: aliakro
 Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
 Tested up to: 6.8
-Stable tag: 5.0
+Stable tag: 5.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,6 +14,8 @@ Create a library of custom shortcodes and reusable content, and seamlessly inser
 == Description ==
 
 > Create a library of custom shortcodes and reusable content, and seamlessly insert them into your posts and pages for streamlined, consistent site updates. Plus, get a head start with a built-in selection of ready-made shortcodes to use out of the box.
+
+In addition to inserting them into your content, you can also **configure them to automatically appear in your site's header and footer. Or limit their display to desktop or mobile devices only.**
 
 Looking to reuse the same snippet of text or HTML across your website while only updating it in one spot? [Snippet Shortcodes](https://snippet-shortcodes.yeken.uk/) could be exactly what you need. With this tool, you can generate a library of custom shortcodes and embed them into your WordPress content. Using the familiar WordPress editor, you can insert anything from text and HTML to JavaScript, images, or any other elements supported by your theme or plugins. The biggest benefit? You only need to create the shortcode once, and you can then deploy it site-wide, saving time and ensuring consistency.
 
@@ -36,6 +38,8 @@ to
 
 **Premium Features**
 
+* **Automatically insert into your site's header or footer** – auto insert your  [custom shortcode's](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) content into either your site's header and/or footer.
+* **Limit to certain device types** – specify whether your [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) should only be visible on Mobile, Tablet, Desktop or all three.
 * **No limits** – create unlimited [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
 * **Inline editor** – Ability to edit [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) quickly using the inline editor.
 * **Duplicator** – Ability to duplicate [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) with one button click.
@@ -77,6 +81,19 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 5.0 - Premium features have been moved to a separate plugin (in accordance with WordPress rules). Please [download and activate Snippet Shortcodes – Premium](https://snippetshortcodes.yeken.uk/download/) 
 
 == Changelog ==
+
+= 5.1 =
+
+* New Feature: Added the ability to state whether your shortcode should be displayed on mobile, desktop, tablet or all three.
+* New Feature: Added the ability to specify whether your shortcode should automatically be injected into your header or footer.
+* Improvement: Only show multisite options if plugin is actually installed on a multisite
+* Bug fix: Ensured the multisite version of a shortcode is correctly deleted when the shortcode is deleted locally.
+
+= 5.0.1 =
+
+* Improvement: Latest version number of Premium plugin is now fetched from the release manifest rather than hardcoded into the plugin.
+* Improvement: Only reach out to YeKen servers for update notices once a day, rather than hourly.
+* Bug fix: Corrected issue where each page call would look for update message from Yeken.
 
 = 5.0 =
 

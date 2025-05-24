@@ -58,8 +58,14 @@ function sh_cd_shortcode_render( $args ) {
 		return '';
 	}
 
+	// Any other reasons this shortcode shouldn't be displayed? e.g. has the 
+	// Premium plugin determined it's not the correct device type? etc
+	if ( true === apply_filters( 'sh-cd-filter-hide-shortcode', false, $shortcode ) ) {
+		return '';
+	}
+
 	// Process other shortcodes within this one
-	$shortcode = do_shortcode( $shortcode );
+	$shortcode = do_shortcode( $shortcode[ 'data' ] );
 
 	// Replace placeholders with user defined parameters
 	return sh_cd_apply_user_defined_parameters( $shortcode, $args );

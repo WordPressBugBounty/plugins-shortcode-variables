@@ -4,8 +4,8 @@
 .sh-cd-table .fa-times, .fa-star {
 	color: #e72d58;
 }
-.sh-cd-advertise-premium .fa-star, .sh-cd-upgrade-button .fa-star {
-  color: #FFFFFF !important
+.sh-cd-advertise-premium .fa-star, .sh-cd-advertise-premium h3, .sh-cd-upgrade-button .fa-star {
+  color: #FFFFFF !important;
 }
 .sh-cd-form .row {
   width:100%;
@@ -81,7 +81,16 @@
   color: #bfbfbf !important;
 }
 .sh-cd-settings h3, .postbox-header, .sh-cd-form h4 {
+  color: #e72d58;
+}
+.sh-cd-table-title, .sh-cd-table th  {
+  font-weight: bold !important;
   color: #e72d58 !important;
+}
+.sh-cd-shortcode-options {
+  background-color: #f9f9f9;
+  border: 1px solid #CCCCCC;
+  padding: 10px;
 }
 .sh-cd-button {
   background-color: #e72d58 !important;
@@ -108,7 +117,7 @@
   font-size: 20px;
 }
 .sh-cd-shortcode-options tr {
-  height: 50px;
+  height: 30px;
 }
 .sh-cd-shortcode-options th {
   text-align: left;
@@ -118,7 +127,10 @@
   font-family: 'Courier New', Courier, monospace;
   font-size: 13px;
   margin-bottom: 0px;
-  margin-top: 7px;
+  margin-top: 0px;
+}
+.sh-cd-postbox-edit-slug #slug {
+  margin-bottom: 7px;
 }
 .sh-cd-editor-select {
 	font-size: 18px;
@@ -130,6 +142,9 @@
 .CodeMirror-wrap {
   border: 1px solid #CCCCCC;
 }
+.sh-cd-postbox-edit-content {
+  margin-bottom: 10px;
+}
 .sh-cd-postbox-edit-content .sh-cd-postbox-content {
   padding: 10px;
 }
@@ -138,4 +153,26 @@
 }
 .Zebra_Tooltip {
   z-index: 99999 !important;
+}
+.sh-cd-page-edit-marketing-prompt {
+  margin-top:10px;
+  font-size: 14px;
+}
+.sh-cd-page-edit-marketing-prompt ul {
+  list-style: disc !important;
+  margin-left: 20px;
+}
+.sh-cd-page-edit-marketing-prompt li {
+  margin-bottom: 10px;
+}
+.sh-cd-page-edit-marketing-prompt span {
+  color: #e72d58 !important;
+  font-weight: bold;
+}
+.sh-cd-icons .sh-cd-option-icon {
+  font-size: 13px;
+  color: #a1a1a1;
+  margin-right:5px;
+  top: 3px;
+  position: relative;
 }

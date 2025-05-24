@@ -49,14 +49,16 @@ function sh_cd_generate_site_hash() {
  */
 function sh_cd_shortcodes_save_post() {
 
+	$fields = apply_filters( 'sh-cd-post-field-keys', [ 'id', 'slug', 'previous_slug', 'data', 'disabled', 'multisite', 'editor' ] );
+ 
 	// Capture the raw $_POST fields, the save functions will process and validate the data
-	$shortcode = sh_cd_get_values_from_post( [ 'id', 'slug', 'previous_slug', 'data', 'disabled', 'multisite', 'editor' ] );
+	$shortcode = sh_cd_get_values_from_post( $fields );
 
 	// If we are not premium, then the user is not allowed to change the site slug (otherwise they could just re-use variables and by pass the limit)
 	if ( ! sh_cd_is_premium() && false === empty( $shortcode[ 'previous_slug' ] ) ) {
 		$shortcode[ 'slug' ] = $shortcode[ 'previous_slug' ];
 	}
-
+	
 	return sh_cd_db_shortcodes_save( $shortcode );
 }
 
@@ -188,6 +190,8 @@ function sh_cd_cache_set( $key, $data, $expire = NULL ) {
     $key = sh_cd_cache_generate_key( $key );
 
     set_transient( $key, $data, $expire );
+
+	do_action( 'sh-cd-global-cache-delete' );
 }
 
 /**
@@ -221,12 +225,17 @@ function sh_cd_cache_delete_by_slug_or_key( $slug_or_key ) {
  *
  * @return mixed
  */
-function sh_cd_cache_delete( $key ) {
+function sh_cd_cache_delete( $key, $trigger_global_hook = true ) {
 
     $key = sh_cd_cache_generate_key( $key );
 
+	if ( true === $trigger_global_hook ) {
+		do_action( 'sh-cd-global-cache-delete' );
+	}
+
     return delete_transient( $key );
 }
+
 
 /**
  * Generate cache key
@@ -424,6 +433,10 @@ function sh_cd_premium_shortcode_download( $return = false ) {
  */
 function sh_cd_is_multisite_enabled() {
 
+	if ( true === defined( 'YK_TEST_IS_MULTISITE' ) && true === YK_TEST_IS_MULTISITE ) {
+		return true;
+	}
+
 	if ( false === is_multisite() ) {
 		return false;
 	}
@@ -541,17 +554,19 @@ function sh_cd_is_shortcode_db_value_by_id_enabled() {
  *
  * @param bool $pro_plus
  */
-function sh_cd_display_pro_upgrade_notice( ) {
-	?>
+function sh_cd_display_pro_upgrade_notice( $title = NULL, $content = '', $class = '' ) {
+	
+	$title = ( true === empty( $title ) ) ? __( 'Upgrade Snippet Shortcodes and get more features!', SH_CD_SLUG ) : $title;
 
-	<div class="postbox sh-cd-advertise-premium">
-		<h3 class="hndle"><span><?php echo __( 'Upgrade Snippet Shortcodes and get more features!', SH_CD_SLUG ); ?> </span></h3>
+	?>
+	<div class="postbox sh-cd-advertise-premium <?php echo esc_attr( $class ) ?>">
+		<h3 class="hndle"><i class="fa-regular fa-star"></i> <?php echo esc_html( $title ) ?></h3>
 		<div style="padding: 0px 15px 0px 15px">
+			<p><?php echo wp_kses( $content, [ 'ul' => [ 'class' ], 'li' => [], 'strong' => [], 'span' => [], 'div' => [] ] ); ?></p>
 			<p><a href="<?php echo esc_url( admin_url('admin.php?page=sh-cd-shortcode-variables-upgrade') ); ?>" class="button-primary sh-cd-upgrade-button"><i class="fa-regular fa-star"></i> <?php echo __( 'Get Premium', SH_CD_SLUG ); ?></a></p>
 		</div>
 	</div>
-
-	<?php
+<?php
 }
 
 /**
@@ -803,4 +818,51 @@ function sh_cd_editors_options( $keys_only = true ) {
  */
 function sh_cd_tooltips_is_enabled() {
 	return ( 'yes' === get_option( 'sh-cd-option-tool-tips-enabled', 'yes' ) );
+}
+
+/**
+ * Fetch icons for given shortcode
+ *
+ * @param [type] $shortcode
+ * @param boolean $return_array
+ * @return void
+ */
+function sh_cd_icons_for_shortcode( $shortcode, $return_array = false ) {
+
+	if ( true === empty( $shortcode ) ) {
+		return [];
+	}
+
+	$icons = [];
+
+	if ( false === empty( $shortcode[ 'header' ] ) ) {
+		$icons[] = sprintf( '<i class="fa-solid fa-heading sh-cd-option-icon sh-cd-tooltip" title="%s"></i>', esc_html( __( 'Insert into WP Header', SH_CD_SLUG ) ) );
+	}
+
+	if ( false === empty( $shortcode[ 'footer' ] ) ) {
+		$icons[] = sprintf( '<i class="fa-solid fa-shoe-prints sh-cd-option-icon sh-cd-tooltip" title="%s"></i>', esc_html( __( 'Insert into WP Footer', SH_CD_SLUG ) ) );
+	}
+
+	if ( false === empty( $shortcode[ 'device_type' ] ) ) {
+
+		$shortcode[ 'device_type' ] = json_decode( $shortcode[ 'device_type' ] );
+
+		if ( true === in_array( 'desktop', $shortcode[ 'device_type' ] ) ) {
+			$icons[] = sprintf( '<i class="fa-solid fa-desktop sh-cd-option-icon sh-cd-tooltip" title="%s"></i>', esc_html( __( 'Display only on desktop devices', SH_CD_SLUG ) ) );
+		} 
+		
+		if ( true === in_array( 'mobile', $shortcode[ 'device_type' ] ) ) {
+			$icons[] = sprintf( '<i class="fa-solid fa-mobile-screen sh-cd-option-icon sh-cd-tooltip" title="%s"></i>', esc_html( __( 'Display only on mobile devices', SH_CD_SLUG ) ) );
+		}
+
+		if ( true === in_array( 'tablet', $shortcode[ 'device_type' ] ) ) {
+			$icons[] = sprintf( '<i class="fa-solid fa-tablet-screen-button sh-cd-option-icon sh-cd-tooltip" title="%s"></i>', esc_html( __( 'Display only on tablet devices', SH_CD_SLUG ) ) );
+		}
+	}
+
+	if ( true === $return_array ) {
+		return $icons;
+	}
+
+	return ( false === empty( $icons ) ) ? implode( PHP_EOL, $icons ) : '';
 }
