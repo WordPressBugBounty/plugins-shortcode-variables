@@ -3,7 +3,7 @@ Contributors: aliakro
 Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
 Tested up to: 6.8
-Stable tag: 5.1
+Stable tag: 5.1.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -78,9 +78,13 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 
 == Upgrade Notice ==
 
-5.0 - Premium features have been moved to a separate plugin (in accordance with WordPress rules). Please [download and activate Snippet Shortcodes – Premium](https://snippetshortcodes.yeken.uk/download/) 
+Version 5.1 now supports automatic insertion into your site's header or footer. Plus, you can now specify which device types your shortcode should appear on. 
 
 == Changelog ==
+
+= 5.1.1 =
+
+* New Feature: Added a new button on plugin help page to allow the plugin database tables to be checked and fixed if required.
 
 = 5.1 =
 

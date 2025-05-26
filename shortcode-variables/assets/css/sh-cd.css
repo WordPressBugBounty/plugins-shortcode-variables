@@ -80,7 +80,7 @@
   cursor: pointer;
   color: #bfbfbf !important;
 }
-.sh-cd-settings h3, .postbox-header, .sh-cd-form h4 {
+.sh-cd-settings h3, .postbox-header, .sh-cd-form h4, .sh-cd-highlight-colour {
   color: #e72d58;
 }
 .sh-cd-table-title, .sh-cd-table th  {

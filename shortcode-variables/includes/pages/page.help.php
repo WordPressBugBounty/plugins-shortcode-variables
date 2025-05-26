@@ -39,7 +39,7 @@ function sh_cd_help_page() {
 							<p><?php echo __( 'You can find detailed documentation for this plugin at our site:', SH_CD_SLUG ); ?></p>
 							<p><a href="https://snippetshortcodes.yeken.uk/" rel="noopener noreferrer"  class="button"  target="_blank"><?php echo __( 'Main website', SH_CD_SLUG ); ?></a>
 								<a href="https://snippet-shortcodes.yeken.uk/" rel="noopener noreferrer"  class="button"  target="_blank"><?php echo __( 'View Documentation', SH_CD_SLUG ); ?></a>
-								<a href="https://github.com/alicolville/shortcode-variables/issues"  class="button"  rel="noopener noreferrer" target="_blank"><?php echo __( 'Release Notes', SH_CD_SLUG ); ?></a>
+								<a href="https://wordpress.org/plugins/shortcode-variables/#developers"  class="button"  rel="noopener noreferrer" target="_blank"><?php echo __( 'Release Notes', SH_CD_SLUG ); ?></a>
 							</p>
 						</div>
 					</div>
@@ -53,7 +53,28 @@ function sh_cd_help_page() {
                             <p>If you have any questions or bugs to report, then please contact us at <a href="mailto:email@yeken.uk">email@yeken.uk</a>.</p>
                         </div>
                     </div>
+					<div class="postbox">
+						<h3 class="postbox-header">
+							<span>
+								<?php echo __( 'Support Actions', SH_CD_SLUG ); ?>
+							</span>
+                        </h3>
+						<div style="padding: 0px 15px 0px 15px">
+							<p><?php echo __( 'Below are tools that may help you troubleshoot issues with your install:', SH_CD_SLUG ); ?></p>
+							<?php
+								$url = admin_url('admin.php?page=sh-cd-help&db-check=y' );
 
+								if ( false === empty( $_GET[ 'db-check' ] ) ) {
+									sh_cd_create_database_table();
+									sh_cd_create_database_table_multisite();
+									echo __( '<p class="sh-cd-highlight-colour">Database tables have been checked and fixed if required.</p>', SH_CD_SLUG );
+								}
+							?>
+							<p>
+								<a href="<?php echo esc_url($url); ?>" rel="noopener noreferrer"  class="button" ><?php echo __( 'Check and fix database tables', SH_CD_SLUG ); ?></a>
+							</p>
+						</div>
+					</div>
 
 				</div>
 				<!-- .meta-box-sortables .ui-sortable -->
