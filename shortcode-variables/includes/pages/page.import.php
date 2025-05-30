@@ -41,7 +41,7 @@ function sh_cd_admin_page_import() {
 								<div class="sh-cd-form-row">
 									<p>
 										<?php echo __( 'Please select a CSV file to import one or more shortcodes into your collection.', SH_CD_SLUG ); ?>
-										<a href="https://snippet-shortcodes.yeken.uk/csv-import.html" rel="noopener noreferrer" target="_blank"><?php echo __( 'Read more about CSV imports and the required format', SH_CD_SLUG ); ?>.</a>
+										<a href="https://yeken.gitbook.io/snippet-shortcodes/features/csv-import" rel="noopener noreferrer" target="_blank"><?php echo __( 'Read more about CSV imports and the required format', SH_CD_SLUG ); ?>.</a>
 									</p>
 									<input id="select_csv" type="button" class="button sh-cd-button" value="<?php echo __( 'Select CSV file', SH_CD_SLUG ); ?>" />
 									<br />

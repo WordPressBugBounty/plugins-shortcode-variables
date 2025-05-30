@@ -3,7 +3,7 @@ Contributors: aliakro
 Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
 Tested up to: 6.8
-Stable tag: 5.1.1
+Stable tag: 5.1.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -17,11 +17,11 @@ Create a library of custom shortcodes and reusable content, and seamlessly inser
 
 In addition to inserting them into your content, you can also **configure them to automatically appear in your site's header and footer. Or limit their display to desktop or mobile devices only.**
 
-Looking to reuse the same snippet of text or HTML across your website while only updating it in one spot? [Snippet Shortcodes](https://snippet-shortcodes.yeken.uk/) could be exactly what you need. With this tool, you can generate a library of custom shortcodes and embed them into your WordPress content. Using the familiar WordPress editor, you can insert anything from text and HTML to JavaScript, images, or any other elements supported by your theme or plugins. The biggest benefit? You only need to create the shortcode once, and you can then deploy it site-wide, saving time and ensuring consistency.
+Looking to reuse the same snippet of text or HTML across your website while only updating it in one spot? [Snippet Shortcodes](https://snippetshortcodes.yeken.uk/) could be exactly what you need. With this tool, you can generate a library of custom shortcodes and embed them into your WordPress content. Using the familiar WordPress editor, you can insert anything from text and HTML to JavaScript, images, or any other elements supported by your theme or plugins. The biggest benefit? You only need to create the shortcode once, and you can then deploy it site-wide, saving time and ensuring consistency.
 
 *Quick example*
 
-By default, you tend to create content once and then copy and paste it across your site as needed. Later, when updates are required, you have to track down every instance, edit each one individually, and save every page or post - making consistent updates a tedious process. Instead, put a snippet like this into one of our [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) and get a shortcode you can paste into your content. To update, all you need to do is edit the [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) and your entire site will update consistently.
+By default, you tend to create content once and then copy and paste it across your site as needed. Later, when updates are required, you have to track down every instance, edit each one individually, and save every page or post - making consistent updates a tedious process. Instead, put a snippet like this into one of our [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) and get a shortcode you can paste into your content. To update, all you need to do is edit the [custom shortcode](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) and your entire site will update consistently.
 
 ``<a href="https://www.facebook.com/yekenuk" target="_blank" rel="noopener">Our Facebook</a>
 
@@ -31,24 +31,24 @@ to
 
 **Basic Features**
 
-* **[Custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html)** – Create up to 10 custom shortcodes that can be embedded throughout your website.
-* **[Parameters](https://snippet-shortcodes.yeken.uk/shortcodes-own.html)** – Enhance your shortcodes by passing parameters into them e.g. [ sv slug="logo" color="blue" ]
-* **[Ready made shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-free.html)**  – A collection of out-of-the-box shortcodes for displaying common WordPress fields such as site title, username, admin email, etc.
-* **HTML editor** – a HTML editor for editing your [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
+* **[Custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes)** – Create up to 10 custom shortcodes that can be embedded throughout your website.
+* **[Parameters](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes)** – Enhance your shortcodes by passing parameters into them e.g. [ sv slug="logo" color="blue" ]
+* **[Ready made shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/core)**  – A collection of ready-made shortcodes for displaying common WordPress fields such as site title, username, admin email, etc.
+* **HTML editor** – a HTML editor for editing your [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes).
 
 **Premium Features**
 
-* **Automatically insert into your site's header or footer** – auto insert your  [custom shortcode's](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) content into either your site's header and/or footer.
-* **Limit to certain device types** – specify whether your [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) should only be visible on Mobile, Tablet, Desktop or all three.
-* **No limits** – create unlimited [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
-* **Inline editor** – Ability to edit [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) quickly using the inline editor.
-* **Duplicator** – Ability to duplicate [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) with one button click.
-* **Enable/Disable** – Ability to enable or disable [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
-* **Multi-site** – use [custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) throughout your entire multi-site, not just limited to the one child site. 
-* **[CSV import](https://snippet-shortcodes.yeken.uk/csv-import.html)** – Bulk import your custom shortcodes.
-* **[WooCommerce fields](https://snippet-shortcodes.yeken.uk/shortcodes/sc-woocommerce.html)** –  A ready-made shortcode to display WooCommerce fields.
-* **[Fetch values from database](https://snippet-shortcodes.yeken.uk/shortcodes/sc-db-value-by-id.html)** – A ready-made shortcode to fetch a value from any database table.
-* An enhanced [collection of out-of-the-box shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-premium.html) for displaying additional WordPress fields, as well as wrapping around PHP functionality like GET/POST values, number of users, etc.
+* **Automatically insert into your site's header or footer** – auto insert your  [custom shortcode's](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) content into either your site's header and/or footer.
+* **Limit to certain device types** – specify whether your [custom shortcode](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) should only be visible on Mobile, Tablet, Desktop or all three.
+* **No limits** – create unlimited [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes).
+* **Inline editor** – Ability to edit [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) quickly using the inline editor.
+* **Duplicator** – Ability to duplicate [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) with one button click.
+* **Enable/Disable** – Ability to enable or disable [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes).
+* **Multi-site** – use [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) throughout your entire multi-site, not just limited to the one child site. 
+* **[CSV import](https://yeken.gitbook.io/snippet-shortcodes/features/csv-import)** – Bulk import your custom shortcodes.
+* **[WooCommerce fields](https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/woocommerce-meta-fields)** –  A ready-made shortcode to display WooCommerce fields.
+* **[Fetch values from database](https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/database-values-by-id)** – A ready-made shortcode to fetch a value from any database table.
+* An enhanced [collection of ready-made shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium) for displaying additional WordPress fields, as well as wrapping around PHP functionality like GET/POST values, number of users, etc.
 
 ==Pricing Plans==
 
@@ -62,25 +62,29 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 
 * [Snippet Shortcodes - Premium](https://snippetshortcodes.yeken.uk/) – main website for the Premium plugin.
 * [Snippet Shortcodes - Core](https://wordpress.org/plugins/shortcode-variables/) – WordPress.org page for the core plugin.
-* [Technical Documentation](https://snippet-shortcodes.yeken.uk/) – Installation and detailed documentation on how to use the plugin.
+* [Technical Documentation](https://yeken.gitbook.io/snippet-shortcodes) – Installation and detailed documentation on how to use the plugin.
 * [Trial license](https://shop.yeken.uk/get-a-trial-license/) – Get a trial license to try out all the features.
 * [Upgrade](https://shop.yeken.uk/product/shortcode-variables/) – purchase a license to receive all of the features.
 
 == Screenshots ==
 
-1. [Custom shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) list, with inline editor, duplicate, and delete options. 
-2. Add a new [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
-3. Edit an existing [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html).
-4. Embeded the [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) into a page.
-5. A [custom shortcode](https://snippet-shortcodes.yeken.uk/shortcodes-own.html) rendered on a page.
-6. Admin page listing the [collection of out-of-the-box shortcodes](https://snippet-shortcodes.yeken.uk/shortcodes-premium.html) available.
-7. [CSV import](https://snippet-shortcodes.yeken.uk/csv-import.html) screen.
+1. [Custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) list, with inline editor, duplicate, and delete options. 
+2. Add a new [custom shortcode](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes).
+3. Edit an existing [custom shortcode](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes).
+4. Embeded the [custom shortcode](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) into a page.
+5. A [custom shortcode](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) rendered on a page.
+6. Admin page listing the [collection of ready-made shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium) available.
+7. [CSV import](https://yeken.gitbook.io/snippet-shortcodes/features/csv-import) screen.
 
 == Upgrade Notice ==
 
 Version 5.1 now supports automatic insertion into your site's header or footer. Plus, you can now specify which device types your shortcode should appear on. 
 
 == Changelog ==
+
+= 5.1.2 =
+
+* Improvement: Updated links to the GitBook documentation website https://yeken.gitbook.io/snippet-shortcodes
 
 = 5.1.1 =
 
@@ -135,8 +139,8 @@ Version 5.1 now supports automatic insertion into your site's header or footer. 
 
 = 4.2 =
 
-* New feature: Added Premium shortcode for displaying WooComerce user fields. Read more: https://snippet-shortcodes.yeken.uk/shortcodes/sc-woocommerce
-* New feature: Added Premium shortcode for displaying WordPress meta fields. Read more: https://snippet-shortcodes.yeken.uk/shortcodes/sc-user-meta
+* New feature: Added Premium shortcode for displaying WooCommerce user fields. Read more: https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/woocommerce-meta-fields
+* New feature: Added Premium shortcode for displaying WordPress meta fields. Read more: https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/wordpress-user-fields
 
 = 4.1.7 =
 
@@ -144,7 +148,7 @@ Version 5.1 now supports automatic insertion into your site's header or footer. 
 
 = 4.1.6 =
 
-* New Feature: Extended [sv slug="sc-db-value-by-id"] shortcode to include the new argument "key-query-string". This allows a key to be read from the matching querystring value. Read more: https://snippet-shortcodes.yeken.uk/shortcodes/sc-db-value-by-id.html
+* New Feature: Extended [sv slug="sc-db-value-by-id"] shortcode to include the new argument "key-query-string". This allows a key to be read from the matching querystring value. Read more: https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/database-values-by-id
 
 = 4.1.5 =
 
@@ -170,7 +174,7 @@ Version 5.1 now supports automatic insertion into your site's header or footer. 
 
 = 4.1 =
 
-* New Feature: New Premium shortcode for fetching a value from a MySQL table, [sv slug="sc-db-value-by-id"]. Read more: https://snippet-shortcodes.yeken.uk/shortcodes/sc-db-value-by-id.html
+* New Feature: New Premium shortcode for fetching a value from a MySQL table, [sv slug="sc-db-value-by-id"]. Read more: https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/database-values-by-id
 
 = 4.0.4 =
 

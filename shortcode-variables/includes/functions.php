@@ -844,8 +844,10 @@ function sh_cd_icons_for_shortcode( $shortcode, $return_array = false ) {
 	}
 
 	if ( false === empty( $shortcode[ 'device_type' ] ) ) {
-
 		$shortcode[ 'device_type' ] = json_decode( $shortcode[ 'device_type' ] );
+	}
+
+	if ( true === is_array( $shortcode[ 'device_type' ] ) ) {
 
 		if ( true === in_array( 'desktop', $shortcode[ 'device_type' ] ) ) {
 			$icons[] = sprintf( '<i class="fa-solid fa-desktop sh-cd-option-icon sh-cd-tooltip" title="%s"></i>', esc_html( __( 'Display only on desktop devices', SH_CD_SLUG ) ) );

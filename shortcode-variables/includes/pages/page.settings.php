@@ -84,7 +84,7 @@ function sh_cd_settings_page_generic() {
 										</td>
 									</tr>
                                     <tr class="<?php echo $disable_if_not_premium_class; ?>">
-                                        <th scope="row"><a href="https://snippet-shortcodes.yeken.uk/shortcodes/sc-db-value-by-id.html" target="_blank" rel="noopener">"db-value-by-id"</a> <?php echo __( 'shortcode enabled', SH_CD_SLUG ); ?>?</th>
+                                        <th scope="row"><a href="https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/database-values-by-id" target="_blank" rel="noopener">"db-value-by-id"</a> <?php echo __( 'shortcode enabled', SH_CD_SLUG ); ?>?</th>
                                         <?php $is_enabled = sh_cd_is_shortcode_db_value_by_id_enabled();  ?>
                                         <td>
                                             <select id="sh-cd-shortcode-db-value-by-id-enabled" name="sh-cd-shortcode-db-value-by-id-enabled">

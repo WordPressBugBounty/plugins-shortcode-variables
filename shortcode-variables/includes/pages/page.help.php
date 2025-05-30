@@ -38,7 +38,7 @@ function sh_cd_help_page() {
 						<div style="padding: 0px 15px 0px 15px">
 							<p><?php echo __( 'You can find detailed documentation for this plugin at our site:', SH_CD_SLUG ); ?></p>
 							<p><a href="https://snippetshortcodes.yeken.uk/" rel="noopener noreferrer"  class="button"  target="_blank"><?php echo __( 'Main website', SH_CD_SLUG ); ?></a>
-								<a href="https://snippet-shortcodes.yeken.uk/" rel="noopener noreferrer"  class="button"  target="_blank"><?php echo __( 'View Documentation', SH_CD_SLUG ); ?></a>
+								<a href="https://yeken.gitbook.io/snippet-shortcodes" rel="noopener noreferrer"  class="button"  target="_blank"><?php echo __( 'View Documentation', SH_CD_SLUG ); ?></a>
 								<a href="https://wordpress.org/plugins/shortcode-variables/#developers"  class="button"  rel="noopener noreferrer" target="_blank"><?php echo __( 'Release Notes', SH_CD_SLUG ); ?></a>
 							</p>
 						</div>
