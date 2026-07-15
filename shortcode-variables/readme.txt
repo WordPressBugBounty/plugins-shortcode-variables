@@ -2,9 +2,9 @@
 Contributors: aliakro
 Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
-Tested up to: 6.9.4
-Stable tag: 5.1.3
-Requires PHP: 7.4
+Tested up to: 7.0.1
+Stable tag: 5.1.4
+Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://www.paypal.me/yeken
@@ -81,6 +81,11 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 Version 5.1 now supports automatic insertion into your site's header or footer. Plus, you can now specify which device types your shortcode should appear on. 
 
 == Changelog ==
+
+= 5.1.4 =
+
+* Maintenance: Updated and tested to WP version 7.0.1.
+* Maintenance: Updated min PHP version to 8.1.
 
 = 5.1.3 =
 
