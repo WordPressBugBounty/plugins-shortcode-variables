@@ -55,6 +55,7 @@ function sh_cd_pages_your_shortcodes_list($action = NULL, $save_result = NULL) {
 
 	// Cloning a shortcode?
     if ( 'clone' === $action && false === empty( $_GET['id'] ) ) {
+	    check_admin_referer( 'sh-cd-clone-shortcode' );
 	    sh_cd_clone( (int) $_GET['id'] );
     }
 
@@ -163,16 +164,12 @@ function sh_cd_pages_your_shortcodes_list($action = NULL, $save_result = NULL) {
 
                                         $class 			= '';
                                         $link 			= sh_cd_link_your_shortcodes();
-                                        $i 				= 0;
-                                        $limit_reached 	= sh_cd_reached_free_limit();
 										$is_premium 	= sh_cd_is_premium();
 
                                         foreach ( $current_shortcodes as $shortcode ) {
 
-											// !! TOOO: This whole loop needs to be refactored! Especially the sprintf()s
-
                                             $class 				= ($class == 'alternate') ? '' : 'alternate';
-                                            $id 				= (int) $shortcode['id'];								
+                                            $id 				= (int) $shortcode['id'];
 											$icons 				= ( $is_premium ) ? sh_cd_icons_for_shortcode( $shortcode ) : '';
 											$multisite_column 	= '';
 
@@ -185,21 +182,21 @@ function sh_cd_pages_your_shortcodes_list($action = NULL, $save_result = NULL) {
 												);
 											}
 
-                                            printf(	'<tr class="%1$s yk-ss-row-%3$s sh-cd-shortcode-row" id="sh-cd-row-%8$s">
-														<td><a href="%2$s" class="slug-link">[%4$s slug="%3$s"]</a> <i class="far fa-copy sh-cd-copy-trigger sh-cd-tooltip" data-clipboard-text="[%4$s slug=&quot;%3$s&quot;]" title="%20$s"></i></td>
+                                            printf(	'<tr class="%1$s yk-ss-row-%3$s sh-cd-shortcode-row" id="sh-cd-row-%7$s">
+														<td><a href="%2$s" class="slug-link">[%4$s slug="%3$s"]</a> <i class="far fa-copy sh-cd-copy-trigger sh-cd-tooltip" data-clipboard-text="[%4$s slug=&quot;%3$s&quot;]" title="%16$s"></i></td>
 														<td align="right">
-															<textarea class="large-text inline-text-shortcode sh-cd-toggle-%13$s" id="sh-cd-text-area-%8$d" data-id="%8$d" %13$s>%5$s</textarea>
+															<textarea class="large-text inline-text-shortcode sh-cd-toggle-%10$s" id="sh-cd-text-area-%7$d" data-id="%7$d" %10$s>%5$s</textarea>
 															<div class="sh-cd-icons">
-																%21$s
-																<a class="button button-small sh-cd-inline-save-button sh-cd-toggle-%13$s" id="sh-cd-save-button-%8$d" data-id="%8$d" %13$s><i class="fas fa-save"></i> %11$s</a>
+																%17$s
+																<a class="button button-small sh-cd-inline-save-button sh-cd-toggle-%10$s" id="sh-cd-save-button-%7$d" data-id="%7$d" %10$s><i class="fas fa-save"></i> %9$s</a>
 															</div>
 														</td>
-														%19$s
-														<td align="middle"><a class="button button-small toggle-disable sh-cd-toggle-%13$s sh-cd-tooltip" id="sc-cd-toggle-%8$s" data-id="%8$s" %13$s title="%18$s"><i class="fa-solid %6$s"></i></a></td>
+														%15$s
+														<td align="middle"><a class="button button-small toggle-disable sh-cd-toggle-%10$s sh-cd-tooltip" id="sc-cd-toggle-%7$s" data-id="%7$s" %10$s title="%14$s"><i class="fa-solid %6$s"></i></a></td>
 														<td width="100">
-															<a class="button button-small sh-cd-toggle-%13$s sh-cd-tooltip" %13$s href="%9$s" title="%17$s"><i class="far fa-clone"></i></a>
-															<a class="button button-small edit-shortcode sh-cd-tooltip" href="%2$s" title="%15$s"><i class="far fa-edit"></i></a>
-															<a id="delete-%8$s" class="button button-small delete-shortcode sh-cd-tooltip" data-id="%8$s" title="%16$s"><i class="fas fa-trash-alt"></i></a>
+															<a class="button button-small sh-cd-toggle-%10$s sh-cd-tooltip" %10$s href="%8$s" title="%13$s"><i class="far fa-clone"></i></a>
+															<a class="button button-small edit-shortcode sh-cd-tooltip" href="%2$s" title="%11$s"><i class="far fa-edit"></i></a>
+															<a id="delete-%7$s" class="button button-small delete-shortcode sh-cd-tooltip" data-id="%7$s" title="%12$s"><i class="fas fa-trash-alt"></i></a>
 														</td>
 													</tr>',
 													$class,
@@ -208,14 +205,10 @@ function sh_cd_pages_your_shortcodes_list($action = NULL, $save_result = NULL) {
 													SH_CD_SHORTCODE,
 													( $is_premium ) ? esc_html( stripslashes( $shortcode['data'] ) ) : __( 'Upgrade for inline editing and toggles.', SH_CD_SLUG ),
 													( 1 === (int) $shortcode['disabled'] ) ? 'fa-times' : 'fa-check',
-													$link . '&action=delete&id=' . $id,
 													$id,
-													( $is_premium ) ? $link . '&action=clone&id=' . $id : sh_cd_license_upgrade_link(),
-													( 1 === (int) $shortcode['multisite'] ) ? 'fa-check' : 'fa-times',
+													( $is_premium ) ? wp_nonce_url( $link . '&action=clone&id=' . $id, 'sh-cd-clone-shortcode' ) : sh_cd_license_upgrade_link(),
 													__( 'Save', SH_CD_SLUG ),
-													__( 'Are you sure you want to delete this shortcode?', SH_CD_SLUG ),
 													( false === $is_premium ) ? 'disabled' : '',
-													( true === $limit_reached && $i > sh_cd_get_free_limit() ) ? 'disabled' : '',
 													__( 'Use the full Visual or Code editor to edit this shortcode.', SH_CD_SLUG ),
 													__( 'Permanently delete and remove this shortcode.', SH_CD_SLUG ),
 													__( 'Clone this shortcode to create an identical copy for editing', SH_CD_SLUG ),
@@ -224,8 +217,6 @@ function sh_cd_pages_your_shortcodes_list($action = NULL, $save_result = NULL) {
 													__( 'Copy to clipboard', SH_CD_SLUG ),
 													wp_kses( $icons, [ 'i' => [ 'class' => [], 'title' => [] ] ] )
                                             );
-
-                                            $i++;
                                         }
                                     }
                                     else {

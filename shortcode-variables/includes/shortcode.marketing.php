@@ -139,7 +139,7 @@ if ( false === function_exists( 'yeken_license_api_fetch_licenses' ) ) {
 			if ( false === empty( $body ) ) {
 
 				$body = json_decode( $body, true );
-				set_transient( 'yeken_api_prices', $body, 216000 ); // Cache for 6 hours
+				set_transient( 'yeken_api_prices', $body, 6 * HOUR_IN_SECONDS ); // Cache for 6 hours
 
 				return $body;
 			}

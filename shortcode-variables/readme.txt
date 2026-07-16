@@ -3,7 +3,7 @@ Contributors: aliakro
 Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
 Tested up to: 7.0.1
-Stable tag: 5.1.4
+Stable tag: 5.1.5
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,15 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 Version 5.1 now supports automatic insertion into your site's header or footer. Plus, you can now specify which device types your shortcode should appear on. 
 
 == Changelog ==
+
+= 5.1.5 =
+
+* Bug fix: Cloning a shortcode from the list screen is now protected against CSRF with a nonce.
+* Bug fix: CSV import no longer silently accepts rows with missing content.
+* Bug fix: Corrected an issue where the "new Premium version available" notice could keep reappearing after being dismissed.
+* Bug fix: Corrected the cache duration used when fetching license prices.
+* Improvement: Settings that only apply to Premium are now properly disabled, not just greyed out, until you upgrade.
+* Improvement: Cleaned up unused code on the "Your Shortcodes" list screen.
 
 = 5.1.4 =
 

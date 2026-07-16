@@ -75,7 +75,7 @@ function sh_cd_settings_page_generic() {
 										<th scope="row"><?php echo __( 'Who can view and modify snippet shortcodes?' , SH_CD_SLUG); ?></th>
 										<?php $edit_permissions = sh_cd_permission_role(); ?>
 										<td>
-											<select id="sh-cd-edit-permissions" name="sh-cd-edit-permissions">
+											<select id="sh-cd-edit-permissions" name="sh-cd-edit-permissions" <?php disabled( sh_cd_is_premium(), false ); ?>>
 												<option value="manage_options" <?php selected( $edit_permissions, 'manage_options' ); ?>><?php echo __( 'Administrators Only', SH_CD_SLUG ); ?></option>
 												<option value="read_private_posts" <?php selected( $edit_permissions, 'read_private_posts' ); ?>><?php echo __( 'Editors and above', SH_CD_SLUG ); ?></option>
 												<option value="publish_posts" <?php selected( $edit_permissions, 'publish_posts' ); ?>><?php echo __( 'Authors and above', SH_CD_SLUG ); ?></option>
@@ -87,7 +87,7 @@ function sh_cd_settings_page_generic() {
                                         <th scope="row"><a href="https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/database-values-by-id" target="_blank" rel="noopener">"db-value-by-id"</a> <?php echo __( 'shortcode enabled', SH_CD_SLUG ); ?>?</th>
                                         <?php $is_enabled = sh_cd_is_shortcode_db_value_by_id_enabled();  ?>
                                         <td>
-                                            <select id="sh-cd-shortcode-db-value-by-id-enabled" name="sh-cd-shortcode-db-value-by-id-enabled">
+                                            <select id="sh-cd-shortcode-db-value-by-id-enabled" name="sh-cd-shortcode-db-value-by-id-enabled" <?php disabled( sh_cd_is_premium(), false ); ?>>
                                                 <option value="No" <?php selected( $is_enabled, false ); ?>><?php echo __( 'No', SH_CD_SLUG ); ?></option>
                                                 <option value="Yes" <?php selected( $is_enabled, true ); ?>><?php echo __( 'Yes', SH_CD_SLUG ); ?></option>
                                             </select>
@@ -115,9 +115,40 @@ function sh_cd_settings_page_generic() {
  */
 function sh_cd_register_settings(){
 
-	register_setting( 'sh-cd-options-group', 'sh-cd-edit-permissions' );
-	register_setting( 'sh-cd-options-group', 'sh-cd-shortcode-db-value-by-id-enabled' );
-    register_setting( 'sh-cd-options-group', 'sh-cd-option-tool-tips-enabled' );
-    register_setting( 'sh-cd-options-group', 'sh-cd-option-default-editor' ); 
+	register_setting( 'sh-cd-options-group', 'sh-cd-edit-permissions', [ 'sanitize_callback' => 'sh_cd_sanitize_edit_permissions' ] );
+	register_setting( 'sh-cd-options-group', 'sh-cd-shortcode-db-value-by-id-enabled', [ 'sanitize_callback' => 'sh_cd_sanitize_yes_no' ] );
+    register_setting( 'sh-cd-options-group', 'sh-cd-option-tool-tips-enabled', [ 'sanitize_callback' => 'sh_cd_sanitize_tooltips_enabled' ] );
+    register_setting( 'sh-cd-options-group', 'sh-cd-option-default-editor', [ 'sanitize_callback' => 'sh_cd_sanitize_default_editor' ] );
+}
+
+/**
+ * Sanitize the "who can view/edit shortcodes" permission role setting
+ */
+function sh_cd_sanitize_edit_permissions( $value ) {
+
+	$allowed = [ 'manage_options', 'read_private_posts', 'publish_posts' ];
+
+	return ( true === in_array( $value, $allowed, true ) ) ? $value : 'manage_options';
+}
+
+/**
+ * Sanitize the "db-value-by-id" enabled setting
+ */
+function sh_cd_sanitize_yes_no( $value ) {
+	return ( 'Yes' === $value ) ? 'Yes' : 'No';
+}
+
+/**
+ * Sanitize the tooltips enabled setting
+ */
+function sh_cd_sanitize_tooltips_enabled( $value ) {
+	return ( 'yes' === $value ) ? 'yes' : 'no';
+}
+
+/**
+ * Sanitize the default editor setting
+ */
+function sh_cd_sanitize_default_editor( $value ) {
+	return ( true === sh_cd_editors_is_valid( $value ) ) ? $value : 'tinymce';
 }
 add_action( 'admin_init', 'sh_cd_register_settings' );

@@ -68,7 +68,7 @@ function sh_cd_prompt_to_upgrade_premium() {
 
 	$version_dismissed = sh_cd_marketing_prompt_been_dismissed( '_yeken_shortcode_variables_upgrade_premium_has_been_dismissed' );
 
-	if ( false !== empty( $version_dimissed ) && $version_dismissed === $latest_version ) {
+	if ( false === empty( $version_dismissed ) && $version_dismissed === $latest_version ) {
 		return;
 	}
 

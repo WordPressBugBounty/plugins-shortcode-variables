@@ -285,19 +285,6 @@ function sh_cd_link_your_shortcodes_edit( $id ) {
 }
 
 /**
- * Return link to delete own shortcode
- *
- * @param $id
- * @return mixed
- */
-function sh_cd_link_your_shortcodes_delete( $id ) {
-
-	$link = admin_url('admin.php?page=sh-cd-shortcode-variables-your-shortcodes&action=delete&id=' . (int) $id );
-
-	return esc_url( $link );
-}
-
-/**
  * Either fetch data from the $_POST object or from the array passed in!
  *
  * @param $object
@@ -606,9 +593,7 @@ function sh_cd_display_info_tooltip( $text ) {
  */
 function sh_cd_import_csv( $attachment_id, $dry_run = true ) {
 
-	if ( false === sh_cd_permission_check() ) {
-		return 'You do not have the correct admin permissions';
-	}
+	sh_cd_permission_check();
 
 	if ( false === sh_cd_is_premium() ) {
 		return 'This is a premium feature';
@@ -729,8 +714,8 @@ function sh_cd_import_csv_validate_row( $csv_row ) {
 		return 'Skipped: Missing slug: ' . implode( ',', $csv_row );
 	}
 
-	if ( false === empty( $isset[ 'content' ] ) ) {
-		return 'Skipped: Content: ' . implode( ',', $csv_row );
+	if ( true === empty( $csv_row[ 'content' ] ) ) {
+		return 'Skipped: Missing content: ' . implode( ',', $csv_row );
 	}
 
 	$allowed_bools = [ 'yes', 'no', 'true', 'false', '1', '0' ];
