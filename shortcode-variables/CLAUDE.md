@@ -39,7 +39,11 @@ Everything the Premium plugin needs is exposed via filters/actions rather than a
 - `sh_cd_is_premium_plugin_activated()` gates purely on `defined('YK_SS_PLUGIN_NAME')`; `sh_cd_is_premium()` additionally requires the `sh-cd-license-is-premium` filter (supplied by Premium) to return true.
 - Filters Premium hooks into: `sh-cd-license-is-premium`, `sh-cd-db-default-values`, `sh-cd-post-field-keys`, `sh-cd-db-default-shortcode-before-save`, `sh-cd-db-loaded-shortcode`, `sh-cd-admin-pages`, `sh-cd-filter-hide-shortcode`, `disable-ss-sc-db-value-by-id`.
 - Actions Premium hooks into: `sh-cd-admin-menu-upgrade`, `sh-cd-upgrade`, `sh-cd-shortcode-added`, `sh-cd-shortcode-updated`, `sh_cd_multisite_changed`, `sh-cd-global-cache-delete`.
-- The `header`, `footer`, `device_type` DB columns and the multisite table exist in core's schema but are only populated/enforced when Premium is active — `sh_cd_is_multisite_enabled()` requires both `is_multisite()` and `sh_cd_is_premium()`.
+- The `header`, `footer`, `device_type`, `roles`, `visibility_start`, `visibility_end`, `target_pages`, `render_count` DB columns and the multisite table exist in core's schema but are only populated/enforced when Premium is active — `sh_cd_is_multisite_enabled()` requires both `is_multisite()` and `sh_cd_is_premium()`.
+
+## Keeping marketing copy and docs in sync
+
+`sh_cd_premium_features_list()` and `sh_cd_marketing_page_edit_additional_options()` (both `includes/marketing.php`), and the "Premium Features" bullet list in `readme.txt`, are three independently-maintained copies of the same content — there is no single source of truth. The GitBook documentation (https://yeken.gitbook.io/snippet-shortcodes, edited via the `gitbook` MCP tools) is a fourth. Whenever a change (in either this plugin or Premium) adds, removes, or changes user-facing behavior of a feature, check and update all four: `sh_cd_premium_features_list()`, `sh_cd_marketing_page_edit_additional_options()`, `readme.txt`'s Premium Features bullets, and the relevant GitBook page(s) — don't assume updating one covers the others.
 
 ## Conventions
 

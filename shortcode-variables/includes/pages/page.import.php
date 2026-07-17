@@ -2,6 +2,37 @@
 
 defined('ABSPATH') or die('Naw ya dinnie!');
 
+/**
+ * Stream the CSV export before any admin page HTML is output. Hooked on admin_init
+ * rather than handled in the page callback itself, since by the time WordPress calls
+ * the page callback it has already sent the admin header/menu chrome, making it too
+ * late to send Content-Disposition/Content-Type headers for a file download.
+ */
+function sh_cd_admin_page_import_maybe_export() {
+
+	if ( false === isset( $_GET[ 'page' ] ) || 'sh-cd-import' !== $_GET[ 'page' ] || 'export' !== ( $_GET[ 'mode' ] ?? '' ) ) {
+		return;
+	}
+
+	sh_cd_permission_check();
+
+	if ( false === sh_cd_is_premium() ) {
+		return;
+	}
+
+	check_admin_referer( 'sh_cd_export_csv' );
+
+	$filename = 'snippet-shortcodes-export-' . gmdate( 'Y-m-d' ) . '.csv';
+
+	nocache_headers();
+	header( 'Content-Type: text/csv; charset=utf-8' );
+	header( 'Content-Disposition: attachment; filename=' . $filename );
+
+	echo sh_cd_export_csv();
+	exit;
+}
+add_action( 'admin_init', 'sh_cd_admin_page_import_maybe_export' );
+
 function sh_cd_admin_page_import() {
 
 	sh_cd_permission_check();
@@ -68,6 +99,19 @@ function sh_cd_admin_page_import() {
 							<?php endif; ?>
                         </div>
                     </div>
+                   <div class="postbox">
+					  		<h3 class="postbox-header">
+								<span>
+									<?php echo __( 'Export to CSV', SH_CD_SLUG ); ?>
+								</span>
+	                        </h3>
+						    <div class="inside">
+	                        	<div class="sh-cd-form-row">
+									<p><?php echo __( 'Download all of your shortcodes as a CSV file, in the same format used for import.', SH_CD_SLUG ); ?></p>
+									<a class="button button-primary sh-cd-button" <?php if ( false === sh_cd_is_premium() ) { echo 'disabled="disabled"'; } ?> href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=sh-cd-import&mode=export' ), 'sh_cd_export_csv' ) ); ?>"><?php echo __( 'Export CSV', SH_CD_SLUG ); ?></a>
+								</div>
+	                        </div>
+	                    </div>
                 </div>
             </div>
         </div>

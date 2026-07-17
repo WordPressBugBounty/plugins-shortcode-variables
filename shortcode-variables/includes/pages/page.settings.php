@@ -44,6 +44,7 @@ function sh_cd_settings_page_generic() {
 									}
 								?>
                                 <h3><?php echo __( 'User Experience' , SH_CD_SLUG); ?></h3>
+                                <hr />
 								<table class="form-table">
                                     <tr>
 										<th scope="row"><?php echo __( 'Default Editor' , SH_CD_SLUG); ?></th>
@@ -70,6 +71,7 @@ function sh_cd_settings_page_generic() {
 									</tr>
                                 </table>
 								<h3><?php echo __( 'Permissions' , SH_CD_SLUG); ?></h3>
+                                <hr />
 								<table class="form-table">
 									<tr class="<?php echo $disable_if_not_premium_class; ?>">
 										<th scope="row"><?php echo __( 'Who can view and modify snippet shortcodes?' , SH_CD_SLUG); ?></th>
@@ -92,6 +94,21 @@ function sh_cd_settings_page_generic() {
                                                 <option value="Yes" <?php selected( $is_enabled, true ); ?>><?php echo __( 'Yes', SH_CD_SLUG ); ?></option>
                                             </select>
                                             <p><?php echo __('Should the Premium shortcode, [sv slug="db-value-by-id"] be enabled?', SH_CD_SLUG)?></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <h3><?php echo __( 'Utilities' , SH_CD_SLUG); ?></h3>
+                                <hr />
+                                <table class="form-table">
+                                    <tr class="<?php echo $disable_if_not_premium_class; ?>">
+                                        <th scope="row"><?php echo __( 'Render-count analytics enabled?', SH_CD_SLUG ); ?></th>
+                                        <?php $render_count_enabled = sh_cd_is_render_count_enabled(); ?>
+                                        <td>
+                                            <select id="sh-cd-option-render-count-enabled" name="sh-cd-option-render-count-enabled" <?php disabled( sh_cd_is_premium(), false ); ?>>
+                                                <option value="yes" <?php selected( $render_count_enabled, true ); ?>><?php echo __( 'Yes', SH_CD_SLUG ); ?></option>
+                                                <option value="no" <?php selected( $render_count_enabled, false ); ?>><?php echo __( 'No', SH_CD_SLUG ); ?></option>
+                                            </select>
+                                            <p><?php echo __( 'Track how many times each shortcode has been rendered, shown on its edit screen. Disable this on a high-traffic site to avoid the extra database write on every shortcode render.', SH_CD_SLUG ); ?></p>
                                         </td>
                                     </tr>
 								</table>
@@ -119,6 +136,7 @@ function sh_cd_register_settings(){
 	register_setting( 'sh-cd-options-group', 'sh-cd-shortcode-db-value-by-id-enabled', [ 'sanitize_callback' => 'sh_cd_sanitize_yes_no' ] );
     register_setting( 'sh-cd-options-group', 'sh-cd-option-tool-tips-enabled', [ 'sanitize_callback' => 'sh_cd_sanitize_tooltips_enabled' ] );
     register_setting( 'sh-cd-options-group', 'sh-cd-option-default-editor', [ 'sanitize_callback' => 'sh_cd_sanitize_default_editor' ] );
+    register_setting( 'sh-cd-options-group', 'sh-cd-option-render-count-enabled', [ 'sanitize_callback' => 'sh_cd_sanitize_render_count_enabled' ] );
 }
 
 /**
@@ -150,5 +168,12 @@ function sh_cd_sanitize_tooltips_enabled( $value ) {
  */
 function sh_cd_sanitize_default_editor( $value ) {
 	return ( true === sh_cd_editors_is_valid( $value ) ) ? $value : 'tinymce';
+}
+
+/**
+ * Sanitize the render-count analytics enabled setting
+ */
+function sh_cd_sanitize_render_count_enabled( $value ) {
+	return ( 'yes' === $value ) ? 'yes' : 'no';
 }
 add_action( 'admin_init', 'sh_cd_register_settings' );

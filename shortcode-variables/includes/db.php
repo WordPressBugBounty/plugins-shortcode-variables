@@ -24,6 +24,11 @@ function sh_cd_create_database_table() {
 	  header bit default 0,
 	  footer bit default 0,
 	  device_type varchar(50) NULL DEFAULT '[\"desktop\",\"mobile\",\"tablet\"]',
+	  roles varchar(255) NULL DEFAULT NULL,
+	  visibility_start datetime NULL DEFAULT NULL,
+	  visibility_end datetime NULL DEFAULT NULL,
+	  render_count bigint(20) unsigned NOT NULL DEFAULT 0,
+	  target_pages text NULL DEFAULT NULL,
 	  UNIQUE KEY id (id)
 	) $charset_collate;";
 
@@ -51,7 +56,38 @@ function sh_cd_create_database_table_multisite() {
 	  header bit default 0,
 	  footer bit default 0,
 	  device_type varchar(50) NULL DEFAULT '[\"desktop\",\"mobile\",\"tablet\"]',
+	  roles varchar(255) NULL DEFAULT NULL,
+	  visibility_start datetime NULL DEFAULT NULL,
+	  visibility_end datetime NULL DEFAULT NULL,
+	  render_count bigint(20) unsigned NOT NULL DEFAULT 0,
+	  target_pages text NULL DEFAULT NULL,
 	  UNIQUE KEY id (id)
+	) $charset_collate;";
+
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+	dbDelta( $sql );
+}
+
+/**
+ * Build database table for shortcode content revisions
+ */
+function sh_cd_create_database_table_revisions() {
+
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . SH_CD_TABLE_REVISIONS;
+
+	$charset_collate = $wpdb->get_charset_collate();
+
+	$sql = "CREATE TABLE $table_name (
+	  id mediumint(9) NOT NULL AUTO_INCREMENT,
+	  shortcode_id mediumint(9) NOT NULL,
+	  data text,
+	  created_by bigint(20) unsigned NOT NULL DEFAULT 0,
+	  created_at datetime NOT NULL,
+	  UNIQUE KEY id (id),
+	  KEY shortcode_id (shortcode_id)
 	) $charset_collate;";
 
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -157,7 +193,10 @@ function sh_cd_db_shortcodes_by_slug( $slug ) {
 }
 
 /**
- * Allow processing of loaded shortcode data
+ * Allow processing of loaded shortcode data. Called both for single by-id/by-slug fetches and,
+ * from sh_cd_export_csv(), in a bulk per-row loop over the entire collection - registered
+ * callbacks must be pure/side-effect-free (no queries, no global state) so they stay safe to
+ * run hundreds of times in one request.
  */
 function sh_cd_db_filter_loaded_shortcode( $shortcode ) {
 	return apply_filters( 'sh-cd-db-loaded-shortcode', $shortcode );
@@ -220,6 +259,8 @@ function sh_cd_db_shortcodes_save( $shortcode, $return_shortcode = false ) {
 	// Updating an existing shortcode?
 	if ( false === empty( $shortcode['id'] ) && true === is_numeric( $shortcode['id'] ) ){
 
+		$shortcode_before_update = sh_cd_db_shortcodes_by_id( $shortcode['id'] );
+
 		$shortcode['slug'] = sh_cd_slug_generate( $shortcode['slug'], $shortcode['id'] );
 
 		$shortcode = apply_filters( 'sh-cd-db-default-shortcode-before-save', $shortcode );
@@ -235,7 +276,12 @@ function sh_cd_db_shortcodes_save( $shortcode, $return_shortcode = false ) {
 		);
 
 		if ( false !== $result ) {
+
 			do_action( 'sh-cd-shortcode-updated', $shortcode );
+
+			if ( false === empty( $shortcode_before_update ) ) {
+				do_action( 'sh-cd-shortcode-before-update', $shortcode_before_update, $shortcode );
+			}
 		}
 
 		sh_cd_cache_delete_by_slug_or_key( $shortcode['id'] );
@@ -445,6 +491,8 @@ function sh_cd_db_shortcodes_update_content( $id, $data ) {
 		return false;
 	}
 
+	$shortcode_before_update = sh_cd_db_shortcodes_by_id( $id );
+
 	global $wpdb;
 
 	$result = $wpdb->update(
@@ -466,6 +514,11 @@ function sh_cd_db_shortcodes_update_content( $id, $data ) {
 		}
 
 	}
+
+	if ( false !== $result && false === empty( $shortcode_before_update ) ) {
+		do_action( 'sh-cd-shortcode-before-update', $shortcode_before_update, $shortcode );
+	}
+
 	sh_cd_cache_delete_by_slug_or_key( $id );
 
 	return ( false !== $result );
@@ -491,6 +544,9 @@ function sh_cd_db_shortcodes_delete( $id ) {
 	$shortcode_before_delete = sh_cd_db_shortcodes_by_id( $id );
 	sh_cd_db_shortcodes_multisite_delete( $shortcode_before_delete['slug'] );
 
+	// Clear revisions
+	sh_cd_db_shortcode_revisions_delete_by_shortcode_id( $id );
+
 	// Clear cached version
 	sh_cd_cache_delete_by_slug_or_key( $id );
 
@@ -514,26 +570,32 @@ function sh_cd_db_shortcodes_delete( $id ) {
 function sh_cd_db_get_formats( $data ) {
 
 	$lookup = [
-		'id' 			=> '%d',
-		'slug' 			=> '%s',
-		'previous_slug' => '%s',
-		'data' 			=> '%s',
-		'disabled' 		=> '%d',
-		'multisite' 	=> '%d',
-		'site_id' 		=> '%d',
-		'editor'		=> '%s',
-		'header' 		=> '%d',
-		'footer' 		=> '%d',
-		'device_type' 	=> '%s'
+		'id' 				=> '%d',
+		'slug' 				=> '%s',
+		'previous_slug' 	=> '%s',
+		'data' 				=> '%s',
+		'disabled' 			=> '%d',
+		'multisite' 		=> '%d',
+		'site_id' 			=> '%d',
+		'editor'			=> '%s',
+		'header' 			=> '%d',
+		'footer' 			=> '%d',
+		'device_type' 		=> '%s',
+		'roles'				=> '%s',
+		'visibility_start'	=> '%s',
+		'visibility_end'	=> '%s',
+		'render_count'		=> '%d',
+		'target_pages'		=> '%s',
 	];
 
 	$formats = [];
 
 	foreach ( $data as $key => $value ) {
 
-		if ( false === empty( $lookup[ $key ] ) ) {
-			$formats[] = $lookup[ $key ];
-		}
+		// $wpdb->update()/insert() match $formats to $data positionally, not by key - so every
+		// key must produce an entry here (even an unrecognised one, defaulted to '%s') or every
+		// column from that point on silently shifts onto the wrong format specifier.
+		$formats[] = $lookup[ $key ] ?? '%s';
 	}
 
 	return $formats;
@@ -564,4 +626,105 @@ function sh_cd_slug_is_unique( $slug, $existing_id = NULL ) {
 	$row = $wpdb->get_var( $sql );
 
 	return ( empty( $row ) );
+}
+
+/**
+ * Save a shortcode content revision, pruning older revisions beyond the retention limit
+ *
+ * @param $shortcode_id
+ * @param $data
+ * @param $user_id
+ *
+ * @return bool
+ */
+function sh_cd_db_shortcode_revisions_save( $shortcode_id, $data, $user_id = NULL ) {
+
+	global $wpdb;
+
+	$user_id = ( true === empty( $user_id ) ) ? get_current_user_id() : $user_id;
+
+	$result = $wpdb->insert(
+		$wpdb->prefix . SH_CD_TABLE_REVISIONS,
+		[
+			'shortcode_id' => $shortcode_id,
+			'data'         => $data,
+			'created_by'   => $user_id,
+			'created_at'   => current_time( 'mysql' ),
+		],
+		[ '%d', '%s', '%d', '%s' ]
+	);
+
+	sh_cd_db_shortcode_revisions_prune( $shortcode_id );
+
+	return ( false !== $result );
+}
+
+/**
+ * Keep only the most recent $keep revisions for a given shortcode
+ *
+ * @param $shortcode_id
+ * @param $keep
+ */
+function sh_cd_db_shortcode_revisions_prune( $shortcode_id, $keep = 20 ) {
+
+	global $wpdb;
+
+	$table = $wpdb->prefix . SH_CD_TABLE_REVISIONS;
+
+	$sql = $wpdb->prepare(
+		"DELETE FROM {$table} WHERE shortcode_id = %d AND id NOT IN (
+			SELECT id FROM ( SELECT id FROM {$table} WHERE shortcode_id = %d ORDER BY created_at DESC, id DESC LIMIT %d ) AS keep_revisions
+		)",
+		$shortcode_id, $shortcode_id, $keep
+	);
+
+	$wpdb->query( $sql );
+}
+
+/**
+ * Fetch all revisions for a shortcode, most recent first
+ *
+ * @param $shortcode_id
+ *
+ * @return array
+ */
+function sh_cd_db_shortcode_revisions_get( $shortcode_id ) {
+
+	global $wpdb;
+
+	$sql = $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . SH_CD_TABLE_REVISIONS . ' WHERE shortcode_id = %d ORDER BY created_at DESC, id DESC', $shortcode_id );
+
+	return $wpdb->get_results( $sql, ARRAY_A );
+}
+
+/**
+ * Fetch a single revision by its ID
+ *
+ * @param $revision_id
+ *
+ * @return array|null
+ */
+function sh_cd_db_shortcode_revisions_get_by_id( $revision_id ) {
+
+	global $wpdb;
+
+	$sql = $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . SH_CD_TABLE_REVISIONS . ' WHERE id = %d', $revision_id );
+
+	return $wpdb->get_row( $sql, ARRAY_A );
+}
+
+/**
+ * Delete all revisions for a given shortcode (e.g. when the shortcode itself is deleted)
+ *
+ * @param $shortcode_id
+ *
+ * @return bool
+ */
+function sh_cd_db_shortcode_revisions_delete_by_shortcode_id( $shortcode_id ) {
+
+	global $wpdb;
+
+	$result = $wpdb->delete( $wpdb->prefix . SH_CD_TABLE_REVISIONS, [ 'shortcode_id' => $shortcode_id ], [ '%d' ] );
+
+	return ( false !== $result );
 }

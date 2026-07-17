@@ -3,7 +3,7 @@ Contributors: aliakro
 Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
 Tested up to: 7.0.1
-Stable tag: 5.1.5
+Stable tag: 5.1.7
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -39,13 +39,18 @@ to
 **Premium Features**
 
 * **Automatically insert into your site's header or footer** – auto insert your  [custom shortcode's](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) content into either your site's header and/or footer.
+* **[Limit header/footer to specific pages](https://yeken.gitbook.io/snippet-shortcodes/features/interactive-blocks/auto-insert-into-header-footer)** – restrict an auto-inserted header/footer shortcode to a chosen list of page slugs, instead of it appearing on every page.
 * **Limit to certain device types** – specify whether your [custom shortcode](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) should only be visible on Mobile, Tablet, Desktop or all three.
+* **[Limit to user roles](https://yeken.gitbook.io/snippet-shortcodes/features/role-targeting)** – show a [custom shortcode](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) only to guests or to specific WordPress user roles.
+* **[Schedule visibility](https://yeken.gitbook.io/snippet-shortcodes/features/visibility-scheduling)** – optionally limit a [custom shortcode](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) to a start/end date and time window.
+* **[Render-count analytics](https://yeken.gitbook.io/snippet-shortcodes/features/render-analytics)** – see how many times each [custom shortcode](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) has been rendered, right on the edit screen.
+* **[Content revision history](https://yeken.gitbook.io/snippet-shortcodes/features/revision-history)** – every save is kept as a revision (last 20 per shortcode), with one-click restore.
 * **No limits** – create unlimited [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes).
 * **Inline editor** – Ability to edit [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) quickly using the inline editor.
 * **Duplicator** – Ability to duplicate [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) with one button click.
 * **Enable/Disable** – Ability to enable or disable [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes).
 * **Multi-site** – use [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes) throughout your entire multi-site, not just limited to the one child site. 
-* **[CSV import](https://yeken.gitbook.io/snippet-shortcodes/features/csv-import)** – Bulk import your custom shortcodes.
+* **[CSV import & export](https://yeken.gitbook.io/snippet-shortcodes/features/csv-import)** – Bulk import your custom shortcodes, or export your entire collection to CSV.
 * **[WooCommerce fields](https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/woocommerce-meta-fields)** –  A ready-made shortcode to display WooCommerce fields.
 * **[Fetch values from database](https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/database-values-by-id)** – A ready-made shortcode to fetch a value from any database table.
 * An enhanced [collection of ready-made shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium) for displaying additional WordPress fields, as well as wrapping around PHP functionality like GET/POST values, number of users, etc.
@@ -81,6 +86,19 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 Version 5.1 now supports automatic insertion into your site's header or footer. Plus, you can now specify which device types your shortcode should appear on. 
 
 == Changelog ==
+
+= 5.1.7 =
+
+* Improvement: CSV import/export now covers every shortcode setting (header/footer insertion, per-page targeting, device type, roles, visibility scheduling), not just slug/content/global/enabled - extensible via a new "sh-cd-csv-columns" filter for the Premium plugin.
+* Bug fix: Fixed an issue where saving an existing shortcode a second time could silently reset Premium settings such as role targeting, visibility scheduling, or per-page header/footer targeting back to their defaults.
+* New Feature: Added a setting to disable render-count analytics, for high-traffic sites wanting to avoid the extra database write on every shortcode render (Premium).
+* Improvement: Updated the Premium feature list shown on the shortcode edit screen and marketing pages to include recently added Premium capabilities.
+
+= 5.1.6 =
+
+* New Feature: Added CSV export, alongside the existing CSV import, from the "Import shortcodes" screen.
+* Improvement: Added database columns and extension hooks (shortcode rendered, shortcode revision history) to support additional Premium features.
+* Improvement: Added a database column to support per-page targeting of automatically-inserted header/footer shortcodes in the Premium plugin.
 
 = 5.1.5 =
 

@@ -18,7 +18,7 @@ function sh_cd_build_admin_menu() {
 	add_submenu_page( 'sh-cd-shortcode-variables-main-menu', __( 'Your Shortcodes', SH_CD_SLUG ),  __( 'Your shortcodes', SH_CD_SLUG ), $allowed_viewer, 'sh-cd-shortcode-variables-your-shortcodes', 'sh_cd_pages_your_shortcodes');
 	add_submenu_page( 'sh-cd-shortcode-variables-main-menu', __( 'Premade Shortcodes', SH_CD_SLUG ),  __( 'Premade shortcodes', SH_CD_SLUG ), $allowed_viewer, 'sh-cd-shortcode-variables-sub-premade', 'sh_cd_premade_shortcodes_page');
 
-	add_submenu_page( 'sh-cd-shortcode-variables-main-menu', __( 'Import shortcodes', SH_CD_SLUG ),  __( 'Import shortcodes', SH_CD_SLUG ), 'manage_options', 'sh-cd-import', 'sh_cd_admin_page_import' );
+	add_submenu_page( 'sh-cd-shortcode-variables-main-menu', __( 'Import / Export', SH_CD_SLUG ),  __( 'Import / Export', SH_CD_SLUG ), 'manage_options', 'sh-cd-import', 'sh_cd_admin_page_import' );
 
 	if( false === sh_cd_is_premium_plugin_activated() ) {
 		add_submenu_page( 'sh-cd-shortcode-variables-main-menu', '<i class="fa-solid fa-star"></i> ' . __( 'Upgrade to Premium', SH_CD_SLUG ),  '<i class="fa-solid fa-star"></i> ' . __( 'Get Premium', SH_CD_SLUG ), 'manage_options', 'sh-cd-shortcode-variables-upgrade', 'sh_cd_page_upgrade');
@@ -122,6 +122,8 @@ function sh_cd_upgrade() {
 		sh_cd_create_database_table();
 
 		sh_cd_create_database_table_multisite();
+
+		sh_cd_create_database_table_revisions();
 
 		do_action( 'sh-cd-upgrade' );
 	}

@@ -5,7 +5,7 @@ defined('ABSPATH') or die("Jog on!");
 /**
  * Plugin Name: Snippet Shortcodes
  * Description: Create a library of custom shortcodes and reusable content, and seamlessly insert them into your posts and pages. 
- * Version: 5.1.5
+ * Version: 5.1.7
  * Requires at least:   6.0
  * Tested up to: 		7.0.1
  * Requires PHP:        8.1
@@ -33,10 +33,11 @@ defined('ABSPATH') or die("Jog on!");
 */
 
 define( 'SH_CD_ABSPATH', plugin_dir_path( __FILE__ ) );
-define( 'SH_CD_PLUGIN_VERSION', '5.1.5' );
+define( 'SH_CD_PLUGIN_VERSION', '5.1.7' );
 define( 'SH_CD_PLUGIN_NAME', 'Snippet Shortcodes' );
 define( 'SH_CD_TABLE', 'SH_CD_SHORTCODES' );
 define( 'SH_CD_TABLE_MULTISITE', 'SH_CD_SHORTCODES_MULTISITE' );
+define( 'SH_CD_TABLE_REVISIONS', 'SH_CD_SHORTCODES_REVISIONS' );
 define( 'SH_CD_SLUG', 'sh-cd-shortcode-variables' );
 define( 'SH_CD_PREFIX', 'sh-cd-' );
 define( 'SH_CD_SHORTCODE', 'sv' );

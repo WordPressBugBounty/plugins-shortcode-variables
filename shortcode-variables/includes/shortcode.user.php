@@ -64,6 +64,9 @@ function sh_cd_shortcode_render( $args ) {
 		return '';
 	}
 
+	// Let the Premium plugin (or anything else) know this shortcode was just rendered, e.g. for usage analytics
+	do_action( 'sh-cd-shortcode-rendered', $shortcode, $args );
+
 	// Process other shortcodes within this one
 	$shortcode = do_shortcode( $shortcode[ 'data' ] );
 

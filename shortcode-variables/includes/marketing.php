@@ -125,13 +125,18 @@ function sh_cd_premium_features_list() {
 
 	return [
 			[ 'title' => 'Insert into header or footer', 'description' => 'Automaically insert your custom shortcode’s content into either your site’s header and/or footer.', 'read-more-url' => '' ],
+			[ 'title' => 'Limit header/footer to specific pages', 'description' => 'Restrict an auto-inserted header/footer shortcode to a chosen list of page slugs, instead of it appearing on every page.', 'read-more-url' => 'https://yeken.gitbook.io/snippet-shortcodes/features/interactive-blocks/auto-insert-into-header-footer' ],
 			[ 'title' => 'Limit to certain device types', 'description' => 'Specify whether your custom shortcode should only be visible on Mobile, Tablet, Desktop or all three.', 'read-more-url' => '' ],
+			[ 'title' => 'Limit to user roles', 'description' => 'Show a custom shortcode only to guests or to specific WordPress user roles.', 'read-more-url' => 'https://yeken.gitbook.io/snippet-shortcodes/features/role-targeting' ],
+			[ 'title' => 'Schedule visibility', 'description' => 'Optionally limit a custom shortcode to a start/end date and time window.', 'read-more-url' => 'https://yeken.gitbook.io/snippet-shortcodes/features/visibility-scheduling' ],
+			[ 'title' => 'Render-count analytics', 'description' => 'See how many times each custom shortcode has been rendered, right on the edit screen.', 'read-more-url' => 'https://yeken.gitbook.io/snippet-shortcodes/features/render-analytics' ],
+			[ 'title' => 'Content revision history', 'description' => 'Every save is kept as a revision (last 20 per shortcode), with one-click restore.', 'read-more-url' => 'https://yeken.gitbook.io/snippet-shortcodes/features/revision-history' ],
 			[ 'title' => 'No limits', 'description' => 'Create unlimited custom shortcodes.', 'read-more-url' => '' ],
 			[ 'title' => 'Inline editor', 'description' => 'Ability to edit custom shortcodes without having to use a full editor.', 'read-more-url' => '' ],
 			[ 'title' => 'Duplicator', 'description' => 'Ability to duplicate custom shortcodes.', 'read-more-url' => '' ],
 			[ 'title' => 'Enable/Disable', 'description' => 'Ability to enable or disable custom shortcodes.', 'read-more-url' => '' ],
 			[ 'title' => 'Multi-site', 'description' => 'Use custom shortcodes throughout your entire multi-site, not just limited to the one child site', 'read-more-url' => '' ],
-			[ 'title' => 'CSV import', 'description' => 'Bulk import your custom shortcodes.', 'read-more-url' => 'https://yeken.gitbook.io/snippet-shortcodes/features/csv-import' ],
+			[ 'title' => 'CSV import & export', 'description' => 'Bulk import your custom shortcodes, or export your entire collection to CSV.', 'read-more-url' => 'https://yeken.gitbook.io/snippet-shortcodes/features/csv-import' ],
 			[ 'title' => 'WooCommerce fields', 'description' => 'A ready-made shortcode to display WooCommerce fields.', 'read-more-url' => 'https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/woocommerce-meta-fields' ],
 			[ 'title' => 'Fetch values from database', 'description' => 'A ready-made shortcode to fetch a value from any database table', 'read-more-url' => 'https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/database-values-by-id' ],
 			[ 'title' => 'More ready-made shortcodes', 'description' => 'Display additional WordPress fields, as well as wrapping around PHP functionality like GET/POST values, number of users, etc', 'read-more-url' => 'https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium' ]
@@ -492,13 +497,23 @@ function sh_cd_marketing_page_edit_additional_options() {
 
 	$title =  __( 'Unlock these additional settings by upgrading to Premium', SH_CD_SLUG ) ;
 
-	$content = sprintf('<ul><li>%s</li><li>%s</li><li>%s</li><li>%s</li><li>%s</li></ul>',
+	// A plain list rather than a fixed sprintf() placeholder count, so adding/removing an
+	// item later doesn't also require recounting %s tokens - see CLAUDE.md's note on keeping
+	// this in sync with new features.
+	$items = [
 		__( '<span>Insert into Header / Footer</span> - specify whether to automatically insert the shortcode content into the WP Header or Footer.', SH_CD_SLUG ),
+		__( '<span>Limit header/footer to specific pages</span> - restrict automatic header/footer insertion to a chosen list of page slugs, instead of it appearing on every page.', SH_CD_SLUG ),
 		__( '<span>Limit to mobile or desktop</span> - specify whether a shortcode should only appear on mobile or desktop devices.', SH_CD_SLUG ),
+		__( '<span>Limit to user roles</span> - show a shortcode only to guests or to specific WordPress user roles.', SH_CD_SLUG ),
+		__( '<span>Schedule visibility</span> - limit a shortcode to a start and/or end date and time window.', SH_CD_SLUG ),
 		__( '<span>Global shortcodes</span> - specify whether a shortcode should be available across all sites in your multisite network.', SH_CD_SLUG ),
 		__( '<span>Disable shortcodes</span> - have the ability to disable shortcodes so content will not appear at the location of the shortcode in the public facing site.', SH_CD_SLUG ),
-		__( '<span>Edit Slug</span> - have the ability to change the slug of an existing shortcode.', SH_CD_SLUG )
-	);
+		__( '<span>Edit Slug</span> - have the ability to change the slug of an existing shortcode.', SH_CD_SLUG ),
+		__( '<span>Render-count analytics</span> - see how many times each shortcode has been rendered, right on this screen.', SH_CD_SLUG ),
+		__( '<span>Revision history</span> - restore a previous version of a shortcode\'s content, with the last 20 revisions kept automatically.', SH_CD_SLUG ),
+	];
+
+	$content = '<ul><li>' . implode( '</li><li>', $items ) . '</li></ul>';
 
 	sh_cd_display_pro_upgrade_notice( $title, $content, 'sh-cd-page-edit-marketing-prompt' );
 }

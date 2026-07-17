@@ -612,6 +612,11 @@ function sh_cd_import_csv( $attachment_id, $dry_run = true ) {
 		return 'Error: The CSV appears to be empty.';
 	}
 
+	// Lowercase the header row up front so it's compared consistently against our
+	// (lowercase) column names both here and per-row below - previously the header row
+	// was validated case-sensitively while each data row's keys were lowercased.
+	$csv[0] = array_map( 'strtolower', $csv[0] );
+
 	array_walk($csv, function(&$a) use ($csv) {
 		$a = array_combine($csv[0], $a);
 	});
@@ -656,12 +661,16 @@ function sh_cd_import_csv( $attachment_id, $dry_run = true ) {
 
 		if ( false === $dry_run ) {
 
-			$shortcode = [	'slug' 			=> $row[ 'slug' ],
-							'previous_slug' => '',
-							'data' 			=> $row[ 'content' ],
-							'disabled' 		=> ! sh_cd_to_bool( $row[ 'enabled' ] ),
-							'multisite' 	=> sh_cd_to_bool( $row[ 'global' ] )
-			];
+			$shortcode = [ 'previous_slug' => '' ];
+
+			foreach ( sh_cd_csv_columns() as $column_name => $column ) {
+
+				if ( false === isset( $row[ $column_name ] ) ) {
+					continue;
+				}
+
+				$shortcode = array_merge( $shortcode, call_user_func( $column[ 'import' ], $row[ $column_name ] ) );
+			}
 
 			$result = sh_cd_db_shortcodes_save( $shortcode );
 
@@ -690,12 +699,14 @@ function sh_cd_import_csv( $attachment_id, $dry_run = true ) {
  */
 function sh_cd_import_csv_validate_header( $header_row ) {
 
-	$expected_headers = [ 'slug', 'content', 'global', 'enabled' ];
+	$required_columns = array_keys( array_filter( sh_cd_csv_columns(), function( $column ) {
+		return true === $column[ 'required' ];
+	} ) );
 
-	foreach ( $expected_headers as $column ) {
+	foreach ( $required_columns as $column ) {
 
 		if ( false === isset( $header_row[ $column ] ) ) {
-			return 'Missing column: ' . $column . '. Expecting: ' . implode( ',', $expected_headers ) . PHP_EOL;
+			return 'Missing column: ' . $column . '. Expecting at least: ' . implode( ',', $required_columns ) . PHP_EOL;
 		}
 	}
 
@@ -730,7 +741,65 @@ function sh_cd_import_csv_validate_row( $csv_row ) {
 		return 'Skipped: Invalid "enabled" value. Must be "yes" or "no": ' . implode( ',', $csv_row );
 	}
 
+	// Give any Premium-registered columns a chance to reject their own value, so dry-run
+	// mode surfaces bad input instead of it being silently coerced later on save.
+	foreach ( sh_cd_csv_columns() as $column_name => $column ) {
+
+		if ( false === isset( $csv_row[ $column_name ] ) || false === isset( $column[ 'validate' ] ) ) {
+			continue;
+		}
+
+		$validation_result = call_user_func( $column[ 'validate' ], $csv_row[ $column_name ] );
+
+		if ( true !== $validation_result ) {
+			return $validation_result;
+		}
+	}
+
 	return true;
+}
+
+/**
+ * Ordered map of CSV column name => column definition, used by both sh_cd_import_csv() and
+ * sh_cd_export_csv(). Extensible via the 'sh-cd-csv-columns' filter so Premium can add columns
+ * for its own fields without core knowing about them - column names must be unique (a later
+ * registration silently overwrites an earlier one of the same name, same as any other array-shaped
+ * filter in this plugin).
+ *
+ * Each column definition:
+ *   'required' => bool                                    column must be present in the CSV header row
+ *   'export'   => callable( array $shortcode ): string     decoded shortcode row -> CSV cell value
+ *   'import'   => callable( string $value ): array         CSV cell value -> partial $shortcode to merge
+ *   'validate' => callable( string $value ): true|string   optional; true, or an error message
+ *
+ * @return array
+ */
+function sh_cd_csv_columns() {
+
+	$columns = [
+		'slug' => [
+			'required' => true,
+			'export'   => function( $shortcode ) { return $shortcode[ 'slug' ]; },
+			'import'   => function( $value ) { return [ 'slug' => $value ]; },
+		],
+		'content' => [
+			'required' => true,
+			'export'   => function( $shortcode ) { return stripslashes( $shortcode[ 'data' ] ); },
+			'import'   => function( $value ) { return [ 'data' => $value ]; },
+		],
+		'global' => [
+			'required' => true,
+			'export'   => function( $shortcode ) { return ( 1 === (int) $shortcode[ 'multisite' ] ) ? 'yes' : 'no'; },
+			'import'   => function( $value ) { return [ 'multisite' => sh_cd_to_bool( $value ) ? 1 : 0 ]; },
+		],
+		'enabled' => [
+			'required' => true,
+			'export'   => function( $shortcode ) { return ( 1 === (int) $shortcode[ 'disabled' ] ) ? 'no' : 'yes'; },
+			'import'   => function( $value ) { return [ 'disabled' => sh_cd_to_bool( $value ) ? 0 : 1 ]; },
+		],
+	];
+
+	return apply_filters( 'sh-cd-csv-columns', $columns );
 }
 
 /**
@@ -740,6 +809,47 @@ function sh_cd_import_csv_validate_row( $csv_row ) {
  */
 function sh_cd_to_bool( $string ) {
 	return filter_var( $string, FILTER_VALIDATE_BOOLEAN );
+}
+
+/**
+ * Export all shortcodes as a CSV string in the same column format sh_cd_import_csv() expects
+ * (see sh_cd_csv_columns()), so the output can be re-imported unchanged.
+ *
+ * @return string
+ */
+function sh_cd_export_csv() {
+
+	sh_cd_permission_check();
+
+	$shortcodes = sh_cd_db_shortcodes_all();
+	$columns    = sh_cd_csv_columns();
+
+	$stream = fopen( 'php://temp', 'r+' );
+
+	fputcsv( $stream, array_keys( $columns ) );
+
+	foreach ( $shortcodes as $shortcode ) {
+
+		// sh_cd_db_shortcodes_all() returns raw DB rows - run each through the same
+		// 'sh-cd-db-loaded-shortcode' filter used when loading a single shortcode, so
+		// Premium's JSON-encoded columns (device_type, roles, etc.) are decoded back into
+		// arrays before the column export callbacks below run.
+		$shortcode = sh_cd_db_filter_loaded_shortcode( $shortcode );
+
+		$row = [];
+
+		foreach ( $columns as $column ) {
+			$row[] = call_user_func( $column[ 'export' ], $shortcode );
+		}
+
+		fputcsv( $stream, $row );
+	}
+
+	rewind( $stream );
+	$csv = stream_get_contents( $stream );
+	fclose( $stream );
+
+	return $csv;
 }
 
 /**
@@ -803,6 +913,22 @@ function sh_cd_editors_options( $keys_only = true ) {
  */
 function sh_cd_tooltips_is_enabled() {
 	return ( 'yes' === get_option( 'sh-cd-option-tool-tips-enabled', 'yes' ) );
+}
+
+/**
+ * Is render-count analytics (tracking how many times each shortcode is rendered, incrementing
+ * a DB counter on every render) enabled? A Premium-only feature, on by default - lets a
+ * high-traffic site opt out of the extra database write on every shortcode render.
+ *
+ * @return bool (default true when Premium, always false otherwise)
+ */
+function sh_cd_is_render_count_enabled() {
+
+	if ( false === sh_cd_is_premium() ) {
+		return false;
+	}
+
+	return ( 'yes' === get_option( 'sh-cd-option-render-count-enabled', 'yes' ) );
 }
 
 /**
