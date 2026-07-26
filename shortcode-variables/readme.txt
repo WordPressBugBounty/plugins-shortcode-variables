@@ -3,7 +3,7 @@ Contributors: aliakro
 Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
 Tested up to: 7.0.1
-Stable tag: 5.1.7
+Stable tag: 5.1.8
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -86,6 +86,10 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 Version 5.1 now supports automatic insertion into your site's header or footer. Plus, you can now specify which device types your shortcode should appear on. 
 
 == Changelog ==
+
+= 5.1.8 =
+
+* Security: Escaped custom shortcode parameter values (e.g. [ sv slug="logo" color="blue" ]) before substituting them into shortcode output, preventing them from breaking out of HTML attributes.
 
 = 5.1.7 =
 

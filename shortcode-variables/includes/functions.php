@@ -78,7 +78,7 @@ function sh_cd_apply_user_defined_parameters( $shortcode, $user_defined_paramete
     }
 
     foreach ( $user_defined_parameters as $key => $value ) {
-        $shortcode = str_replace( '%%' . $key . '%%', $value, $shortcode );
+        $shortcode = str_replace( '%%' . $key . '%%', esc_attr( $value ), $shortcode );
     }
 
 	return $shortcode;
