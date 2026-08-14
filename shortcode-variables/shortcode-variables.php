@@ -5,7 +5,7 @@ defined('ABSPATH') or die("Jog on!");
 /**
  * Plugin Name: Snippet Shortcodes
  * Description: Create a library of custom shortcodes and reusable content, and seamlessly insert them into your posts and pages. 
- * Version: 5.1.8
+ * Version: 5.2
  * Requires at least:   6.0
  * Tested up to: 		7.0.1
  * Requires PHP:        8.1
@@ -33,7 +33,7 @@ defined('ABSPATH') or die("Jog on!");
 */
 
 define( 'SH_CD_ABSPATH', plugin_dir_path( __FILE__ ) );
-define( 'SH_CD_PLUGIN_VERSION', '5.1.8' );
+define( 'SH_CD_PLUGIN_VERSION', '5.2' );
 define( 'SH_CD_PLUGIN_NAME', 'Snippet Shortcodes' );
 define( 'SH_CD_TABLE', 'SH_CD_SHORTCODES' );
 define( 'SH_CD_TABLE_MULTISITE', 'SH_CD_SHORTCODES_MULTISITE' );
@@ -67,4 +67,5 @@ add_action( 'plugins_loaded', function() {
     include_once SH_CD_ABSPATH . 'includes/pages/page.help.php';
     include_once SH_CD_ABSPATH . 'includes/pages/page.import.php';
     include_once SH_CD_ABSPATH . 'includes/tinymce.php';
+    include_once SH_CD_ABSPATH . 'includes/gutenberg.php';
 });

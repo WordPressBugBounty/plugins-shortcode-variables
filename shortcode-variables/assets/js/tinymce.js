@@ -11,31 +11,13 @@
                         {
                             text: 'Your shortcodes',
                             onclick: function() {
-
-                                if ( true !== sh_cd_tinymce[ 'premium' ] ) {
-
-                                    if( true === confirm( sh_cd_tinymce[ 'upgrade-text' ] ) ) {
-                                        window.location.href = sh_cd_tinymce[ 'upgrade-url' ];
-                                    }
-
-                                } else {
-                                    sh_cd_tinymce_popup( editor, sh_cd_tinymce[ 'values-your' ] );
-                                }
+                                sh_cd_tinymce_popup( editor, sh_cd_tinymce[ 'values-your' ] );
                             }
                         },
                         {
                             text: 'Premade shortcodes',
                             onclick: function() {
-
-                                if ( true !== sh_cd_tinymce[ 'premium' ] ) {
-
-                                    if( true === confirm( sh_cd_tinymce[ 'upgrade-text' ] ) ) {
-                                        window.location.href = sh_cd_tinymce[ 'upgrade-url' ];
-                                    }
-
-                                } else {
-                                    sh_cd_tinymce_popup( editor, sh_cd_tinymce[ 'values-premade' ] );
-                                }
+                                sh_cd_tinymce_popup( editor, sh_cd_tinymce[ 'values-premade' ] );
                             }
                         }
                     ]

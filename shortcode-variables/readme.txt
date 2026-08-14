@@ -3,7 +3,7 @@ Contributors: aliakro
 Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
 Tested up to: 7.0.1
-Stable tag: 5.1.8
+Stable tag: 5.2
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,6 +35,7 @@ to
 * **[Parameters](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes)** – Enhance your shortcodes by passing parameters into them e.g. [ sv slug="logo" color="blue" ]
 * **[Ready made shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/core)**  – A collection of ready-made shortcodes for displaying common WordPress fields such as site title, username, admin email, etc.
 * **HTML editor** – a HTML editor for editing your [custom shortcodes](https://yeken.gitbook.io/snippet-shortcodes/features/own-shortcodes).
+* **Editor insertion** – pick a shortcode from a dropdown and insert it straight into your content, from either the Classic Editor toolbar or the Block Editor (Gutenberg).
 
 **Premium Features**
 
@@ -83,9 +84,14 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 
 == Upgrade Notice ==
 
-Version 5.1 now supports automatic insertion into your site's header or footer. Plus, you can now specify which device types your shortcode should appear on. 
+Version 5.2 - Added a "Snippet Shortcode" block for the Block Editor (Gutenberg) and The existing Classic Editor toolbar picker for inserting shortcodes is no longer limited to Premium.
 
 == Changelog ==
+
+= 5.2 =
+
+* New Feature: Added a "Snippet Shortcode" block for the Block Editor (Gutenberg), letting you pick one of your own shortcodes or a premade shortcode from a dropdown and insert it directly, with a live preview.
+* Improvement: The existing Classic Editor toolbar picker for inserting shortcodes is no longer limited to Premium - it's now available to everyone.
 
 = 5.1.8 =
 

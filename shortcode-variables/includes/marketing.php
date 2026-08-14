@@ -57,7 +57,7 @@ function sh_cd_prompt_to_upgrade_premium() {
 		return;
 	}
 	
-	if ( $latest_version === YK_SS_PLUGIN_VERSION ) {
+	if ( false === version_compare( $latest_version, YK_SS_PLUGIN_VERSION, '>' ) ) {
 		return;
 	}
 
@@ -186,7 +186,9 @@ function sh_cd_shortcode_presets_premium_list() {
         'user-counts' => [ 'class' => 'SC_USER_COUNTS', 'description' => __( 'Display a count of all WordPress users or the number of WordPress users for a given role e.g. [sv slug="user-counts" role="subscriber"] or [sv slug="user-counts"]', SH_CD_SLUG ), 'premium' => true ],
 		'user-profile-photo' => [ 'class' => 'SC_AVATAR', 'description' => __( 'Display the WordPress profile photo for the logged in user e.g. [sv slug="user-profile-photo" width="150"] or [sv slug="user-profile-photo"]. Please note, width defaults to 96px.', SH_CD_SLUG ), 'premium' => true ],
 		'user-meta' => [ 'class' => 'SC_USER_META', 'description' => __( 'Display a WordPress user meta field (wraps get_user_meta) field e.g. last_name. Read more: <a href="https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/wordpress-user-fields" rel="noopener" target="_blank">[sv slug="user-meta" field="last_name"]</a>', SH_CD_SLUG ), 'premium' => true ],
-		'woocommerce' => [ 'class' => 'SC_USER_META', 'description' => __( 'Display a Woocommerce user profile field e.g. billing_phone. Read more: <a href="https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/woocommerce-meta-fields" rel="noopener" target="_blank">[sv slug="woocommerce" field="billing_phone"]</a>', SH_CD_SLUG ), 'premium' => true ]
+		'woocommerce' => [ 'class' => 'SC_USER_META', 'description' => __( 'Display a Woocommerce user profile field e.g. billing_phone. Read more: <a href="https://yeken.gitbook.io/snippet-shortcodes/features/ready-made/premium/woocommerce-meta-fields" rel="noopener" target="_blank">[sv slug="woocommerce" field="billing_phone"]</a>', SH_CD_SLUG ), 'premium' => true ],
+		'copy-code' => [ 'class' => 'SC_COPY_CODE', 'description' => __( 'A ready-made, styled code snippet with a "Copy" button. Add the text to display via the "code" attribute e.g. [sv slug="copy-code" code="npm install my-package"]', SH_CD_SLUG ), 'premium' => true ],
+		'countdown' => [ 'class' => 'SC_COUNTDOWN', 'description' => __( 'A countdown timer counting down to a given date/time. Specify the target via the "date" attribute (e.g. date="2026-12-31T23:59:59") and an optional "label" attribute for the heading text e.g. [sv slug="countdown" date="2026-12-31T23:59:59" label="Sale ends in"]', SH_CD_SLUG ), 'premium' => true ]
 
 		// '' => [ 'class' => '', 'description' => '', 'premium' => true ]
 	];

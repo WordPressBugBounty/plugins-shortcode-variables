@@ -32,9 +32,6 @@
 			'button-text' => 'Snippet Shortcodes: Insert one of your own shortcodes or select a premade shortcode. ',
 			'button-image' => plugins_url( '../assets/images/snippet-shortcodes.svg', __FILE__ ),
 			'select-text' => 'Premade Variables',
-			'premium' => sh_cd_is_premium(),
-			'upgrade-url' => sh_cd_license_upgrade_link(),
-			'upgrade-text' => 'This is a premium feature. Would you like to upgrade Snippet Shortcodes?',
 			'dialog-title' => 'Select a shortcode',
 			'dialog-label' => 'Shortcode',
 			'values-your' => sh_cd_tinymce_js_varables_shortcodes( 'your' ),
@@ -55,10 +52,6 @@
 	function sh_cd_tinymce_js_varables_shortcodes( $mode ) {
 
 		$data = [];
-
-		if ( false === sh_cd_is_premium() ) {
-			return [];
-		}
 
 		if ( 'premade' === $mode ) {
 
