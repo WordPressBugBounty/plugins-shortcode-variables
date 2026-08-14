@@ -3,7 +3,7 @@ Contributors: aliakro
 Tags: custom,shortcode,snippet,variable,library
 Requires at least: 6.0
 Tested up to: 7.0.1
-Stable tag: 5.2
+Stable tag: 5.2.1
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -87,6 +87,10 @@ If you have a question or an issue, please ask on the plugin's [WordPress suppor
 Version 5.2 - Added a "Snippet Shortcode" block for the Block Editor (Gutenberg) and The existing Classic Editor toolbar picker for inserting shortcodes is no longer limited to Premium.
 
 == Changelog ==
+
+= 5.2.1 =
+
+* Security: Custom shortcode parameter values (e.g. [ sv slug="logo" url="..." ]) substituted into a URL-bearing attribute (href, src, action, etc.) are now escaped with esc_url() instead of esc_attr(), so a value can't inject a dangerous URL scheme such as javascript:.
 
 = 5.2 =
 

@@ -65,6 +65,10 @@ function sh_cd_shortcodes_save_post() {
 /**
  * Replace user parameters within a shortcode e.g. look for %%parameter%% and replace
  *
+ * Values landing inside a URL-bearing attribute (href, src, action, etc.) are escaped
+ * with esc_url() rather than esc_attr(), so a value such as "javascript:alert(1)" can't
+ * be substituted straight into a link - esc_attr() alone doesn't strip dangerous schemes.
+ *
  * @param $shortcode
  * @param $user_defined_parameters
  *
@@ -77,8 +81,29 @@ function sh_cd_apply_user_defined_parameters( $shortcode, $user_defined_paramete
         return $shortcode;
     }
 
+    // HTML attributes whose value is a URL - substitutions landing inside one of these get esc_url() instead of esc_attr().
+    $url_attributes = apply_filters( 'sh-cd-url-attributes', [ 'href', 'src', 'action', 'formaction', 'cite', 'background', 'poster', 'longdesc', 'usemap' ] );
+
     foreach ( $user_defined_parameters as $key => $value ) {
-        $shortcode = str_replace( '%%' . $key . '%%', esc_attr( $value ), $shortcode );
+
+        $placeholder = '%%' . $key . '%%';
+
+        if ( false === strpos( $shortcode, $placeholder ) ) {
+            continue;
+        }
+
+        // First, swap in any occurrence sitting inside a URL attribute value, escaped with esc_url().
+        $shortcode = preg_replace_callback(
+            '/(?<![\w-])(' . implode( '|', $url_attributes ) . ')(\s*=\s*)("|\')((?:(?!\3).)*)\3/i',
+            function( $matches ) use ( $placeholder, $value ) {
+                $attribute_value = str_replace( $placeholder, esc_url( $value ), $matches[4] );
+                return $matches[1] . $matches[2] . $matches[3] . $attribute_value . $matches[3];
+            },
+            $shortcode
+        );
+
+        // Anything left over (i.e. not inside a URL attribute) is a normal attribute/text substitution.
+        $shortcode = str_replace( $placeholder, esc_attr( $value ), $shortcode );
     }
 
 	return $shortcode;
